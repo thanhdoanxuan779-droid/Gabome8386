@@ -45,6 +45,10 @@ label{display:block;font-size:12px;font-weight:650;margin-bottom:6px}
 input,select,textarea{display:block;width:100%;min-width:0;max-width:100%;border:1px solid #dce5df;background:#fbfcfb;border-radius:10px;padding:10px 11px;color:var(--text);outline:none}
 input:focus,select:focus,textarea:focus{border-color:#45a574;box-shadow:0 0 0 3px #19875412}
 input[type=number]{font-variant-numeric:tabular-nums}
+input[type="date"]{min-height:46px;padding:10px 12px!important;border:1.5px solid #9ab6a4!important;border-radius:11px!important;background:linear-gradient(145deg,#fff,#edf6ef)!important;color:#123b2a!important;font-size:16px!important;font-weight:850!important;font-variant-numeric:tabular-nums;letter-spacing:.25px;box-shadow:inset 0 1px 0 #fff}
+input[type="date"]:focus{border-color:#b18b40!important;box-shadow:0 0 0 3px #b18b4028!important}
+input[type="date"]::-webkit-calendar-picker-indicator{opacity:1;cursor:pointer;padding:5px;border-radius:7px;background-color:#e3efe6}
+.date-display{display:inline-flex;align-items:center;min-height:25px;padding:3px 9px;border:1px solid #b7d0be;border-radius:8px;background:linear-gradient(135deg,#eff8f1,#e2f1e6);color:#12452d;font-size:12px;font-weight:900;letter-spacing:.3px;line-height:1.3;white-space:nowrap;font-variant-numeric:tabular-nums}
 textarea{min-height:76px;resize:vertical}
 .unit{font-size:10px;color:var(--muted);font-weight:400}
 .result{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;background:#eff8f2;border-radius:10px;margin-top:12px}
@@ -359,6 +363,15 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .login-secure{text-align:center;font-size:11px;color:#526b59;margin-top:13px}
 .login-landscape{position:absolute;z-index:0;left:0;right:0;bottom:0;height:125px;width:100%;opacity:.76;pointer-events:none}
 .login-landscape svg{display:block;width:100%;height:100%}
+.login-screen.login-keyboard-open{justify-content:flex-start;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 16px calc(8px + env(safe-area-inset-bottom));}
+.login-screen.login-keyboard-open .login-emblem{width:62px;height:62px;margin:0 auto 3px}
+.login-screen.login-keyboard-open .login-scene h1{margin:2px 0;font-size:clamp(20px,6vw,25px)}
+.login-screen.login-keyboard-open .login-subtitle{display:none}
+.login-screen.login-keyboard-open .login-card{padding:12px 15px 11px}
+.login-screen.login-keyboard-open .login-input-wrap input{padding:10px 0}
+.login-screen.login-keyboard-open .login-secure{margin-top:7px}
+.login-screen.login-keyboard-open .login-landscape{display:none}
+@media(max-height:520px){.login-screen.login-keyboard-open{gap:4px;padding-top:calc(5px + env(safe-area-inset-top))}.login-screen.login-keyboard-open .login-emblem{width:42px;height:42px;margin-bottom:0}.login-screen.login-keyboard-open .login-scene h1{font-size:19px}.login-screen.login-keyboard-open .login-card{padding:9px 13px}.login-screen.login-keyboard-open .login-input-wrap input{padding:8px 0}.login-screen.login-keyboard-open .login-secure{display:none}}
 
 /* Mẫu 2: thanh tiêu đề xanh tràn ngang, nội dung chọn trại trên nền kem */
 .farm-screen{position:fixed;inset:0;z-index:99990;display:none;align-items:stretch;justify-content:center;overflow:auto;padding:0;background:#f8f6ef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#20352a}
@@ -385,11 +398,12 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .farm-enter:disabled{opacity:.48;box-shadow:none;cursor:not-allowed}
 .farm-error{min-height:18px;margin-top:8px;color:#b42318;font-size:12px}
 .farm-menu[hidden]{display:none!important}
-.farm-menu{position:fixed;z-index:100001;top:82px;right:12px;width:min(340px,calc(100vw - 24px));max-height:calc(100dvh - 96px);overflow:auto;padding:14px;background:#fcfaf4;border:1px solid #c6a15a;border-radius:15px;box-shadow:0 18px 50px #061b1460;color:#20352a}
-.farm-menu-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid #e8e1cf;color:#173b2a}
-.farm-menu-head strong{font-size:15px}
-.farm-menu-close{width:34px;height:34px;border:0;border-radius:9px;background:#efe9d9;color:#20352a;font-size:20px;line-height:1}
-.farm-menu-section{padding-top:12px}
+.farm-menu{position:fixed;inset:0;z-index:100100;width:100vw;height:100vh;height:100dvh;max-height:none;overflow:auto;box-sizing:border-box;padding:0;border:0;border-radius:0;background:#f8f6ef;box-shadow:none;color:#20352a}
+.farm-menu-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:64px;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border:0;background:#123b2a;color:#f8f3e5;box-shadow:0 4px 16px #09271930}
+.farm-menu-head strong{font-size:18px;color:#f4e7bc}
+.farm-menu-close{width:auto;height:40px;padding:0 14px;border:1px solid #c5a45b;border-radius:10px;background:#1c4d35;color:#f0d58b;font-size:14px;font-weight:800;line-height:1;white-space:nowrap}
+.farm-menu-section{width:min(100%,760px);margin:0 auto;padding:18px 16px 4px;box-sizing:border-box}
+.farm-menu:not(.app-nav-menu)>.farm-menu-logout{display:flex;width:min(calc(100% - 32px),728px);margin:18px auto;padding:11px 12px}
 .farm-menu-section-title{display:block;margin-bottom:8px;color:#68766b;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
 .farm-manage-list{display:grid;gap:7px}
 .farm-manage-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 9px;border:1px solid #e5dfcf;border-radius:11px;background:#fffdf8}
@@ -409,10 +423,6 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .header-top-actions .farm-menu-toggle{border-color:#ffffff70;background:#ffffff18;color:#fff}
 .app-nav-menu .farm-menu-action{display:flex;align-items:center;width:100%;margin:6px 0;padding:11px 12px;border:1px solid #e5dfcf;border-radius:10px;background:#fffdf8;color:#20352a;text-align:left;font-size:13px;font-weight:750}
 .app-nav-menu .farm-menu-action:hover{border-color:#c6a15a;background:#f5efdf}
-#dailyWorkMenu.app-nav-menu,#eggExportWorkMenu.app-nav-menu{position:fixed;inset:0;z-index:100100;width:100vw;height:100vh;height:100dvh;max-height:none;overflow:auto;box-sizing:border-box;padding:0;border:0;border-radius:0;background:#f8f6ef;box-shadow:none}
-#dailyWorkMenu.app-nav-menu .farm-menu-head,#eggExportWorkMenu.app-nav-menu .farm-menu-head{position:sticky;top:0;z-index:3;min-height:64px;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border:0;background:#123b2a;color:#f8f3e5;box-shadow:0 4px 16px #09271930}
-#dailyWorkMenu.app-nav-menu .farm-menu-head strong,#eggExportWorkMenu.app-nav-menu .farm-menu-head strong{color:#f4e7bc;font-size:18px}
-#dailyWorkMenu.app-nav-menu .farm-menu-close,#eggExportWorkMenu.app-nav-menu .farm-menu-close{width:auto;height:40px;padding:0 14px;border:1px solid #c5a45b;border-radius:10px;background:#1c4d35;color:#f0d58b;font-size:14px;font-weight:800;white-space:nowrap}
 .work-menu-content{width:min(100%,760px);margin:0 auto;padding:8px 16px calc(24px + env(safe-area-inset-bottom))}
 .work-menu-section{padding:18px 0 4px}
 .work-menu-section-title{display:block;margin:0 0 10px;color:#173d2b;font-size:16px;font-weight:850}
@@ -427,8 +437,10 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .work-menu-bottom{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:18px}
 .work-menu-bottom .farm-menu-action,.work-menu-bottom .farm-menu-logout{justify-content:center;width:100%;min-height:48px;margin:0;border-radius:11px;text-align:center}
 body.work-menu-open{overflow:hidden}
-@media(max-width:420px){.farm-content{padding:20px 14px 28px}.farm-choice{min-height:72px;padding:10px 11px}.farm-menu{top:78px}.farm-manage-item{grid-template-columns:minmax(0,1fr)}.farm-manage-actions button{padding:8px 10px}}
+@media(max-width:420px){.farm-content{padding:20px 14px 28px}.farm-choice{min-height:72px;padding:10px 11px}.farm-manage-item{grid-template-columns:minmax(0,1fr)}.farm-manage-actions button{padding:8px 10px}}
 .pdf-farm-label{margin:5px 2px 10px;padding:8px 10px;border:1px solid #dce5df;border-radius:10px;background:#eff8f2;color:#146c43;font-size:12px;font-weight:750;overflow-wrap:anywhere}
+#date,#coldStoreOutDate,#eggExportDate{min-height:46px!important;border:1.5px solid #9ab6a4!important;border-radius:11px!important;background:linear-gradient(145deg,#fff,#edf6ef)!important;color:#123b2a!important;font-size:16px!important;font-weight:850!important;font-variant-numeric:tabular-nums;letter-spacing:.25px;box-shadow:inset 0 1px 0 #fff}
+#date:focus,#coldStoreOutDate:focus,#eggExportDate:focus{border-color:#b18b40!important;box-shadow:0 0 0 3px #b18b4028!important}
 
 
 @media(max-width:767px){
@@ -499,7 +511,7 @@ body.work-menu-open{overflow:hidden}
       <span class="farm-brand-title">TRẠI GÀ BỐ MẸ</span>
       <button id="modeMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="modeMenu">☰</button>
     </div>
-    <div id="modeMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Menu</strong><button id="modeMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="modeMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
+	    <div id="modeMenu" class="farm-menu app-nav-menu" hidden role="dialog" aria-modal="true" aria-label="Menu ứng dụng"><div class="farm-menu-head"><strong>Menu</strong><button id="modeMenuClose" class="farm-menu-close" type="button" aria-label="Trở về">← Trở về</button></div><div class="farm-menu-section"><button id="modeMenuWriteReportBtn" type="button" class="farm-menu-action">📋 Viết Báo Cáo</button><button id="modeMenuExportEggsBtn" type="button" class="farm-menu-action">🥚 Xuất Kho trứng</button><button id="modeMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
     <main class="farm-content">
       <h2 id="modeSelectTitle">Chọn chức năng</h2>
       <p>Chọn loại công việc bạn muốn thực hiện.</p>
@@ -523,8 +535,8 @@ body.work-menu-open{overflow:hidden}
       <span class="farm-brand-title">TRẠI GÀ BỐ MẸ</span>
       <button id="farmMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu quản lý trại" aria-expanded="false" aria-controls="farmMenu">☰</button>
     </div>
-    <div id="farmMenu" class="farm-menu" hidden>
-      <div class="farm-menu-head"><strong>Quản lý trại</strong><button id="farmMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div>
+	    <div id="farmMenu" class="farm-menu" hidden role="dialog" aria-modal="true" aria-label="Quản lý trại">
+	      <div class="farm-menu-head"><strong>Quản lý trại</strong><button id="farmMenuClose" class="farm-menu-close" type="button" aria-label="Trở về">← Trở về</button></div>
       <div class="farm-menu-section">
         <span class="farm-menu-section-title">Các trại · đổi tên / xóa</span>
         <div id="farmManageList" class="farm-manage-list"></div>
@@ -1328,9 +1340,10 @@ function setFarmMenuOpen(open){
  const menu=document.getElementById('farmMenu');
  const button=document.getElementById('farmMenuBtn');
  if(!menu||!button)return;
- menu.hidden=!open;
- button.setAttribute('aria-expanded',String(open));
- button.setAttribute('aria-label',open?'Đóng menu quản lý trại':'Mở menu quản lý trại');
+	 menu.hidden=!open;
+	 button.setAttribute('aria-expanded',String(open));
+	 button.setAttribute('aria-label',open?'Đóng menu quản lý trại':'Mở menu quản lý trại');
+	 document.body.classList.toggle('work-menu-open',document.querySelectorAll('.farm-menu:not([hidden])').length>0);
 }
 function renderFarmManagement(){
  const list=document.getElementById('farmManageList');
@@ -1423,6 +1436,7 @@ function showLoginScreen(){
 	 sessionPassword='';
 	 selectedFarm=null;
 	 workMode='daily-report';
+	 document.getElementById('loginScreen').classList.remove('login-keyboard-open');
 	 document.getElementById('modeSelectScreen').style.display='none';
 	 document.getElementById('farmSelectScreen').style.display='none';
 	 document.getElementById('mainApp').style.display='none';
@@ -1604,7 +1618,7 @@ function setWorkNavigationMenuOpen(item,open){
 	 item.button.setAttribute('aria-expanded',String(open));
 	 item.button.setAttribute('aria-label',open?'Đóng menu':'Mở menu');
 	 if(open&&item.farmListId)renderWorkMenuFarms(item.farmListId);
-	 document.body.classList.toggle('work-menu-open',workNavigationMenus.some(menu=>!menu.menu.hidden));
+	 document.body.classList.toggle('work-menu-open',document.querySelectorAll('.farm-menu:not([hidden])').length>0);
 }
 workNavigationMenus.forEach(item=>{
 	 item.button.addEventListener('click',e=>{e.stopPropagation();setWorkNavigationMenuOpen(item,item.menu.hidden);});
@@ -1638,6 +1652,8 @@ async function navigateFromWorkMenu(nextMode=workMode,nextFarmId=selectedFarm?.i
 document.getElementById('dailyMenuWriteReportBtn').addEventListener('click',()=>navigateFromWorkMenu('daily-report'));
 document.getElementById('dailyMenuExportEggsBtn').addEventListener('click',()=>navigateFromWorkMenu('egg-export'));
 document.getElementById('dailyMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);signOutFromWorkMenu();});
+document.getElementById('modeMenuWriteReportBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[2],false);workMode='daily-report';showFarmChooser(localStorage.getItem(FARM_KEY)||'');});
+document.getElementById('modeMenuExportEggsBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[2],false);workMode='egg-export';showFarmChooser(localStorage.getItem(FARM_KEY)||'');});
 document.getElementById('modeMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[2],false);showLoginScreen();});
 document.getElementById('eggExportMenuWriteReportBtn').addEventListener('click',()=>navigateFromWorkMenu('daily-report'));
 document.getElementById('eggExportMenuExportEggsBtn').addEventListener('click',()=>navigateFromWorkMenu('egg-export'));
@@ -1671,6 +1687,13 @@ async function validateLogin(password){
 
 $('#loginBtn').addEventListener('click',()=>validateLogin($('#loginPassword').value.trim()));
 $('#loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')validateLogin($('#loginPassword').value.trim());});
+$('#loginPassword').addEventListener('focus',()=>{
+	 document.getElementById('loginScreen').classList.add('login-keyboard-open');
+	 setTimeout(()=>$('#loginPassword').scrollIntoView({block:'nearest'}),120);
+});
+$('#loginPassword').addEventListener('blur',()=>setTimeout(()=>{
+	 if(!$('#loginPassword').matches(':focus'))document.getElementById('loginScreen').classList.remove('login-keyboard-open');
+},180));
 
 function scopedStoragePrefix(prefix){
  return selectedFarm?prefix+encodeURIComponent(selectedFarm.id)+'_':prefix;
@@ -2344,9 +2367,11 @@ function renderHistory(){
   const item=document.createElement('div');
   item.className='history-item';
 
-  const info=document.createElement('div');
-  const title=document.createElement('strong');
-  title.textContent=date.split('-').reverse().join('/')+' · '+(report.manager||'Chưa ghi tên');
+	  const info=document.createElement('div');
+	  const title=document.createElement('strong');
+	  const dateBadge=document.createElement('time');dateBadge.className='date-display';dateBadge.dateTime=String(date||'');dateBadge.textContent=String(date||'').split('-').reverse().join('/')||'Chưa có ngày';
+	  const manager=document.createElement('span');manager.textContent=' · '+(report.manager||'Chưa ghi tên');
+	  title.append(dateBadge,manager);
 
   const sub=document.createElement('small');
   sub.textContent='Trứng: '+fmt(data.calculated?.eggs||0)+' quả · Đàn cuối: '+fmt(data.calculated?.flock||0)+' con';
@@ -3273,7 +3298,9 @@ function renderEggExportReports(){
 	 eggExportRecords.forEach(record=>{
 	  const row=document.createElement('div');row.className='egg-export-record';
 	  const meta=document.createElement('div');meta.className='egg-export-record-meta';
-	  const title=document.createElement('strong');title.textContent=(String(record.date||'').split('-').reverse().join('/')||'Chưa có ngày')+' · '+(record.recipient||'Chưa ghi người nhận');
+	  const title=document.createElement('strong');const dateValue=String(record.date||'');
+	  const dateBadge=document.createElement('time');dateBadge.className='date-display';dateBadge.dateTime=dateValue;dateBadge.textContent=dateValue.split('-').reverse().join('/')||'Chưa có ngày';
+	  const recipient=document.createElement('span');recipient.textContent=' · '+(record.recipient||'Chưa ghi người nhận');title.append(dateBadge,recipient);
 	  const detail=document.createElement('small');detail.textContent=Number(record.quantity||0).toLocaleString('vi-VN')+' quả · '+(Array.isArray(record.attachments)?record.attachments.length:0)+' tệp'+(record.signature?' · có chữ ký':'');
 	  meta.append(title,detail);
 	  const actions=document.createElement('div');actions.className='egg-export-record-actions';
@@ -3365,7 +3392,7 @@ function buildEggExportPrintable(report){
 	 root.replaceChildren();
 	 const title=document.createElement('h1');title.textContent='PHIẾU XUẤT KHO TRỨNG';root.appendChild(title);
 	 const table=document.createElement('table');
-	 const addRow=(label,value)=>{const tr=document.createElement('tr');const th=document.createElement('th');th.textContent=label;const td=document.createElement('td');td.textContent=String(value||'—');tr.append(th,td);table.appendChild(tr);};
+		 const addRow=(label,value)=>{const tr=document.createElement('tr');const th=document.createElement('th');th.textContent=label;const td=document.createElement('td');if(label==='Ngày xuất'&&report.date){const dateBadge=document.createElement('time');dateBadge.className='date-display';dateBadge.dateTime=String(report.date);dateBadge.textContent=String(value||'—');td.appendChild(dateBadge);}else td.textContent=String(value||'—');tr.append(th,td);table.appendChild(tr);};
 	 addRow('Trại',report.farmName||selectedFarm?.name||'');
 	 addRow('Ngày xuất',String(report.date||'').split('-').reverse().join('/'));
 	 addRow('Người nhận trứng',report.recipient);
