@@ -189,8 +189,20 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-content{max-width:860px;margin:0 auto;padding:12px}
 .egg-export-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .egg-export-grid .field.full{grid-column:1/-1}
-.egg-export-signature-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.egg-export-signature-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.egg-export-signature-tools{display:flex;align-items:center;gap:7px}
+.egg-export-signature-open{border:1px solid #c6a15a;border-radius:9px;padding:8px 11px;background:#173d2b;color:#fff;font-size:12px;font-weight:800}
 #eggExportSignature{display:block;width:100%;height:auto;margin-top:7px;border:1px solid var(--line);border-radius:10px;background:#fff;touch-action:none}
+#eggExportSignatureFullscreen[hidden]{display:none!important}
+#eggExportSignatureFullscreen{position:fixed;inset:0;z-index:100020;display:flex;flex-direction:column;gap:12px;padding:calc(12px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));background:#f8f6ef;color:#20352a}
+.egg-signature-fullscreen-head,.egg-signature-fullscreen-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto}
+.egg-signature-fullscreen-head strong{font-size:15px;color:#173d2b}
+.egg-signature-fullscreen-head button,.egg-signature-fullscreen-foot button{min-height:40px;border:1px solid #c6a15a;border-radius:9px;padding:8px 13px;background:#173d2b;color:#fff;font-size:13px;font-weight:800}
+.egg-signature-fullscreen-head #eggExportFullscreenClearBtn{border-color:#e6c2b8;background:#fff1ed;color:#a63524}
+.egg-signature-fullscreen-slot{display:grid;place-items:center;flex:1 1 auto;min-height:0;padding:6px;border:1px solid #d9ddda;border-radius:12px;background:#fff;box-shadow:0 3px 14px #20352a12}
+#eggExportSignatureFullscreen #eggExportSignature{width:auto;height:auto;max-width:100%;max-height:100%;aspect-ratio:3/1;margin:0;background:#fff}
+.egg-signature-fullscreen-foot{justify-content:center;color:#65746b;font-size:12px;text-align:center}
+.egg-signature-fullscreen-foot button{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));}
 .egg-export-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
 .egg-export-actions .btn{width:100%;min-width:0;padding:12px 8px;font-size:13px}
 .egg-export-record{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}
@@ -212,7 +224,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-print-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 .egg-export-print-media img{max-width:100%;max-height:230px;object-fit:contain;border:1px solid #dfe6e1}
 .egg-export-print-signature{max-width:260px;max-height:100px;object-fit:contain;border-bottom:1px solid #333}
-@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}}
+@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}.egg-signature-fullscreen-head strong{font-size:13px}.egg-signature-fullscreen-foot{padding:0 4px 48px}}
 .photo-viewer{
  position:fixed;
  inset:0;
@@ -843,9 +855,9 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
      <div class="field full"><label for="eggExportNote">Ghi chú</label><textarea id="eggExportNote" rows="3" placeholder="Ghi chú về lô trứng, phương tiện hoặc tình trạng bàn giao..."></textarea></div>
      <div class="field full"><label for="eggExportFiles">Ảnh / video minh chứng</label><input id="eggExportFiles" type="file" accept="image/*,video/*" multiple><div id="eggExportFileList" class="cold-evidence-list" aria-live="polite"></div><p class="note">Tệp minh chứng được lưu riêng trên thiết bị này, không tải lên máy chủ. Tối đa 100 MB mỗi tệp.</p></div>
      <div class="field full">
-      <div class="egg-export-signature-head"><label for="eggExportSignature">Chữ ký người nhận trứng</label><button id="clearEggExportSignatureBtn" type="button" class="cold-evidence-delete">Xóa chữ ký</button></div>
+      <div class="egg-export-signature-head"><label for="eggExportSignature">Chữ ký người nhận trứng</label><div class="egg-export-signature-tools"><button id="openEggExportSignatureFullscreenBtn" type="button" class="egg-export-signature-open">Ký toàn màn hình</button><button id="clearEggExportSignatureBtn" type="button" class="cold-evidence-delete">Xóa chữ ký</button></div></div>
       <canvas id="eggExportSignature" width="1200" height="400" aria-label="Vùng ký tên bằng ngón tay hoặc chuột"></canvas>
-      <p class="note">Ký trực tiếp bằng ngón tay trên điện thoại hoặc dùng chuột. Chữ ký không bắt buộc.</p>
+      <p class="note">Chạm “Ký toàn màn hình” để mở vùng ký lớn; nên xoay ngang điện thoại. Chữ ký không bắt buộc.</p>
      </div>
     </div>
    </section>
@@ -856,6 +868,12 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
   </form>
   <section id="eggExportPrintable" class="egg-export-printable" aria-label="Phiếu xuất kho trứng để in"></section>
  </main>
+ <div id="eggExportSignatureFullscreen" hidden aria-label="Bảng ký toàn màn hình">
+  <div class="egg-signature-fullscreen-head"><strong>Ký tên người nhận trứng</strong><button id="eggExportFullscreenClearBtn" type="button">Xóa chữ ký</button></div>
+  <div id="eggExportSignatureFullscreenSlot" class="egg-signature-fullscreen-slot"></div>
+  <div class="egg-signature-fullscreen-foot">Ký trong khung trắng. Xoay ngang điện thoại để có vùng ký rộng hơn.</div>
+  <div class="egg-signature-fullscreen-foot"><button id="closeEggExportSignatureFullscreenBtn" type="button">Xong</button></div>
+ </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -3302,14 +3320,51 @@ function finishEggExportPrint(){
 	 eggExportPrintOldTitle='';
 	 eggExportPrintUrls.forEach(url=>URL.revokeObjectURL(url));eggExportPrintUrls=[];
 }
+let eggExportSignaturePlaceholder=null;
+let eggExportSignatureFullscreenActive=false;
+async function openEggExportSignaturePad(){
+	 const overlay=$('#eggExportSignatureFullscreen');
+	 const canvas=$('#eggExportSignature');
+	 const slot=$('#eggExportSignatureFullscreenSlot');
+	 if(!overlay||!canvas||!slot||!overlay.hidden)return;
+	 eggExportSignaturePlaceholder=document.createComment('Vị trí canvas chữ ký');
+	 canvas.parentNode.insertBefore(eggExportSignaturePlaceholder,canvas);
+	 slot.appendChild(canvas);
+	 overlay.hidden=false;
+	 if(overlay.requestFullscreen){
+	  try{
+	   await overlay.requestFullscreen();
+	   eggExportSignatureFullscreenActive=document.fullscreenElement===overlay;
+	   if(eggExportSignatureFullscreenActive&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');}catch(e){}}
+	  }catch(e){eggExportSignatureFullscreenActive=false;}
+	 }
+}
+function closeEggExportSignaturePad(exitFullscreen=true){
+	 const overlay=$('#eggExportSignatureFullscreen');
+	 const canvas=$('#eggExportSignature');
+	 if(!overlay||overlay.hidden)return;
+	 if(eggExportSignatureDrawing)finishEggExportSignatureStroke();
+	 if(canvas&&eggExportSignaturePlaceholder?.parentNode){eggExportSignaturePlaceholder.parentNode.insertBefore(canvas,eggExportSignaturePlaceholder);eggExportSignaturePlaceholder.remove();}
+	 eggExportSignaturePlaceholder=null;
+	 overlay.hidden=true;
+	 const wasFullscreen=document.fullscreenElement===overlay;
+	 eggExportSignatureFullscreenActive=false;
+	 if(exitFullscreen&&wasFullscreen&&document.exitFullscreen){document.exitFullscreen().catch(()=>{});}
+	 if(screen.orientation?.unlock){try{screen.orientation.unlock();}catch(e){}}
+}
 function initEggExportSignature(){
 	 const canvas=$('#eggExportSignature');const ctx=canvas.getContext('2d');
 	 ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=8;ctx.strokeStyle='#20312a';
 	 const point=e=>{const rect=canvas.getBoundingClientRect();return{x:(e.clientX-rect.left)*canvas.width/rect.width,y:(e.clientY-rect.top)*canvas.height/rect.height};};
 	 canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);eggExportSignatureDrawing=true;ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle='#20312a';ctx.fill();ctx.beginPath();ctx.moveTo(p.x,p.y);});
 	 canvas.addEventListener('pointermove',e=>{if(!eggExportSignatureDrawing)return;e.preventDefault();const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();});
-	 const end=()=>{if(!eggExportSignatureDrawing)return;eggExportSignatureDrawing=false;eggExportSignatureData=canvas.toDataURL('image/png');scheduleEggExportDraftSave();};
-	 canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+	 canvas.addEventListener('pointerup',finishEggExportSignatureStroke);canvas.addEventListener('pointercancel',finishEggExportSignatureStroke);
+}
+function finishEggExportSignatureStroke(){
+	 if(!eggExportSignatureDrawing)return;
+	 eggExportSignatureDrawing=false;
+	 eggExportSignatureData=$('#eggExportSignature').toDataURL('image/png');
+	 scheduleEggExportDraftSave();
 }
 
 $('#eggExportForm').addEventListener('submit',saveEggExportReport);
@@ -3319,6 +3374,16 @@ $('#eggExportFiles').addEventListener('change',function(){addEggExportFiles(this
 $('#clearEggExportSignatureBtn').addEventListener('click',()=>{
 	 setEggExportSignature('');scheduleEggExportDraftSave();
 });
+$('#openEggExportSignatureFullscreenBtn').addEventListener('click',openEggExportSignaturePad);
+$('#closeEggExportSignatureFullscreenBtn').addEventListener('click',()=>closeEggExportSignaturePad());
+$('#eggExportFullscreenClearBtn').addEventListener('click',()=>{setEggExportSignature('');scheduleEggExportDraftSave();});
+document.addEventListener('fullscreenchange',()=>{
+	 const overlay=$('#eggExportSignatureFullscreen');
+	 if(!overlay||overlay.hidden)return;
+	 if(document.fullscreenElement===overlay){eggExportSignatureFullscreenActive=true;return;}
+	 if(eggExportSignatureFullscreenActive)closeEggExportSignaturePad(false);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#eggExportSignatureFullscreen').hidden)closeEggExportSignaturePad();});
 $('#printEggExportBtn').addEventListener('click',()=>printEggExportReport());
 $('#eggExportNewReportMenuBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);newEggExportReport();});
 $('#eggExportMenuChangeFarmBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);switchEggExportFarm();});
