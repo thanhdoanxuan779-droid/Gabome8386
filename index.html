@@ -194,15 +194,17 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-signature-open{border:1px solid #c6a15a;border-radius:9px;padding:8px 11px;background:#173d2b;color:#fff;font-size:12px;font-weight:800}
 #eggExportSignature{display:block;width:100%;height:auto;margin-top:7px;border:1px solid var(--line);border-radius:10px;background:#fff;touch-action:none}
 #eggExportSignatureFullscreen[hidden]{display:none!important}
-#eggExportSignatureFullscreen{position:fixed;inset:0;z-index:100020;display:flex;flex-direction:column;gap:12px;padding:calc(12px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));background:#f8f6ef;color:#20352a}
-.egg-signature-fullscreen-head,.egg-signature-fullscreen-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto}
-.egg-signature-fullscreen-head strong{font-size:15px;color:#173d2b}
+#eggExportSignatureFullscreen{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:100020;display:block;overflow:hidden;padding:0;background:#fff;color:#20352a}
+.egg-signature-fullscreen-head,.egg-signature-fullscreen-foot{position:absolute;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;pointer-events:none}
+.egg-signature-fullscreen-head{top:0;left:0;right:0;padding:calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));background:linear-gradient(#ffffffef,#ffffffb8,transparent)}
+.egg-signature-fullscreen-head strong{padding:7px 10px;border-radius:8px;background:#ffffffd9;color:#173d2b;font-size:15px}
 .egg-signature-fullscreen-head button,.egg-signature-fullscreen-foot button{min-height:40px;border:1px solid #c6a15a;border-radius:9px;padding:8px 13px;background:#173d2b;color:#fff;font-size:13px;font-weight:800}
+.egg-signature-fullscreen-head button,.egg-signature-fullscreen-foot button{pointer-events:auto;box-shadow:0 2px 10px #173d2b30}
 .egg-signature-fullscreen-head #eggExportFullscreenClearBtn{border-color:#e6c2b8;background:#fff1ed;color:#a63524}
-.egg-signature-fullscreen-slot{display:grid;place-items:center;flex:1 1 auto;min-height:0;padding:6px;border:1px solid #d9ddda;border-radius:12px;background:#fff;box-shadow:0 3px 14px #20352a12}
-#eggExportSignatureFullscreen #eggExportSignature{width:auto;height:auto;max-width:100%;max-height:100%;aspect-ratio:3/1;margin:0;background:#fff}
-.egg-signature-fullscreen-foot{justify-content:center;color:#65746b;font-size:12px;text-align:center}
-.egg-signature-fullscreen-foot button{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));}
+.egg-signature-fullscreen-slot{position:absolute;inset:0;display:block;min-height:0;padding:0;border:0;border-radius:0;background:#fff}
+#eggExportSignatureFullscreen #eggExportSignature{display:block;width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:auto;margin:0;border:0;border-radius:0;background:#fff;touch-action:none}
+.egg-signature-fullscreen-foot.signature-hint{left:calc(12px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));max-width:min(70vw,420px);justify-content:flex-start;padding:7px 9px;border-radius:8px;background:#ffffffd9;color:#46574b;font-size:11px;text-align:left}
+.egg-signature-fullscreen-foot.signature-done{right:calc(12px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom))}
 .egg-export-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
 .egg-export-actions .btn{width:100%;min-width:0;padding:12px 8px;font-size:13px}
 .egg-export-record{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}
@@ -224,7 +226,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-print-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 .egg-export-print-media img{max-width:100%;max-height:230px;object-fit:contain;border:1px solid #dfe6e1}
 .egg-export-print-signature{max-width:260px;max-height:100px;object-fit:contain;border-bottom:1px solid #333}
-@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}.egg-signature-fullscreen-head strong{font-size:13px}.egg-signature-fullscreen-foot{padding:0 4px 48px}}
+@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}.egg-signature-fullscreen-head strong{font-size:13px}.egg-signature-fullscreen-foot.signature-hint{right:72px;max-width:calc(100vw - 150px);font-size:10px}}
 .photo-viewer{
  position:fixed;
  inset:0;
@@ -871,8 +873,8 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
  <div id="eggExportSignatureFullscreen" hidden aria-label="Bảng ký toàn màn hình">
   <div class="egg-signature-fullscreen-head"><strong>Ký tên người nhận trứng</strong><button id="eggExportFullscreenClearBtn" type="button">Xóa chữ ký</button></div>
   <div id="eggExportSignatureFullscreenSlot" class="egg-signature-fullscreen-slot"></div>
-  <div class="egg-signature-fullscreen-foot">Ký trong khung trắng. Xoay ngang điện thoại để có vùng ký rộng hơn.</div>
-  <div class="egg-signature-fullscreen-foot"><button id="closeEggExportSignatureFullscreenBtn" type="button">Xong</button></div>
+  <div class="egg-signature-fullscreen-foot signature-hint">Ký trực tiếp toàn màn hình. Xoay ngang điện thoại để có vùng ký rộng hơn.</div>
+  <div class="egg-signature-fullscreen-foot signature-done"><button id="closeEggExportSignatureFullscreenBtn" type="button">Xong</button></div>
  </div>
 </div>
 
