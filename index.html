@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" content="#151a1d">
+<meta name="theme-color" content="#146c43">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -455,157 +455,9 @@ body.work-menu-open{overflow:hidden}
  html body input[readonly],html body input:disabled,html body textarea[readonly],html body textarea:disabled,html body input[name="feedStart"],html body input[name="feed2Start"]{
   background:#fff!important;background-color:#fff!important;background-image:none!important;color:#111!important;-webkit-text-fill-color:#111!important;border-color:transparent!important;box-shadow:none!important;opacity:1!important
  }
-	 .photo-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:6px!important}
-	 .photo-item{break-inside:avoid;min-width:0}
-	 .photo-item img{height:120px!important;width:100%!important;object-fit:contain!important}
-}
-/* ===== THEME 16 · CARBON–COPPER OPERATIONS ===== */
-:root{--green:#91cf99;--green2:#91cf99;--bg:#151a1d;--text:#f2f4f1;--muted:#aeb9b3;--line:#3b4549;--red:#e58b7c;--blue:#85b8df;--copper:#e98545;--copper-light:#f4a263;--surface:#20272b;--surface-raised:#293135;--surface-soft:#303a3e}
-html{background:#151a1d;color-scheme:dark}
-html body{background:#151a1d!important;color:#f2f4f1}
-body{background:#151a1d;color:var(--text)}
-#mainApp,#eggExportScreen{width:100%;max-width:620px;min-height:100dvh;margin-left:auto;margin-right:auto;background:#151a1d;color:var(--text)}
-#mainApp .content,#eggExportScreen .content{background:transparent!important;color:var(--text)}
-#mainApp .header.header,#eggExportScreen .header.header{background:linear-gradient(145deg,#222a2e,#171d20)!important;color:#f2f4f1;border:1px solid #343e42;box-shadow:0 10px 28px #0005}
-#mainApp .brand small,#eggExportScreen .brand small{color:#bac4bf;opacity:1;letter-spacing:.6px}
-#mainApp .header h1,#eggExportScreen .header h1{color:#f6f6f2;letter-spacing:.2px}
-#mainApp .header p,#eggExportScreen .header p{color:#b3bdb8;opacity:1}
-.logo{background:#e9854520;color:#f0a064;border:1px solid #e9854540;filter:saturate(1.15)}
-.tag{background:#343d41;color:#f0a064;border:1px solid #4a5559}
-.farm-banner{background:#252d31!important;border:1px solid #414b4f;color:#edf1ed}
-.farm-banner button{border-color:#687276;background:#30393d;color:#f4a263}
-.farm-menu-toggle,.header-top-actions .farm-menu-toggle{border-color:#a55f35;background:#2a3033;color:#f4a263}
-.summary{gap:9px}
-.stat{background:linear-gradient(150deg,#252d31,#20272b);border:1px solid #3b4549;border-radius:15px;box-shadow:0 5px 14px #0002}
-.stat .label{color:#b9c2bd}
-.stat strong{color:#f6f7f3}
-.stat small{color:#aab5af}
-.green{color:var(--green)!important}
-.red{color:var(--red)!important}
-.card{background:#20272b!important;color:#f2f4f1;border:1px solid #394448;border-radius:16px;box-shadow:0 6px 18px #0002}
-.card-head{border-bottom:1px solid #394448}
-.card-head h2{color:#f1f3ef}
-.card-head p{color:#aab5af}
-.num{border-radius:50%;background:#4b3327;color:#f3a064;border:1px solid #74452d}
-.card-body{color:#eef1ed}
-.card-body label,.egg-export-grid label{color:#d8dfda}
-.subhead{color:#edf0ec}
-.divider{background:#394448}
-.note,.unit,.worker-count{color:#aab5af}
-.result{background:#293135!important;border-radius:11px}
-.result>span,.result>strong{background:#2d363a!important;border-color:#465256!important;color:#edf1ed!important}
-.result>strong{color:#f1a064!important}
-.feed-group,.feed-total-group,.worker-card,.photo-item,.cold-evidence-item,.cold-recipient-card,.egg-export-record{background:#252d31!important;border:1px solid #3b464a!important;color:#edf1ed}
-.feed-group-title,.feed-total-title,.cold-recipient-head strong{color:#f0a064}
-.feed-total-group{border-radius:12px}
-.worker-title strong,.egg-export-record-meta strong{color:#f0f2ee}
-.worker-title,.cold-recipient-head{color:#edf1ed}
-.worker-count,.egg-export-record-meta small,.photo-name,.cold-evidence-name{color:#aeb8b3}
-.field input,.field select,.field textarea,input,select,textarea{background:#171e21!important;color:#f2f4f1!important;border:1px solid #424d51!important}
-input::placeholder,textarea::placeholder{color:#84918b!important;opacity:1}
-input:focus,select:focus,textarea:focus{border-color:#df8548!important;box-shadow:0 0 0 3px #e9854528!important}
-select option{background:#20272b;color:#f2f4f1}
-input[type="date"],#date,#coldStoreOutDate,#eggExportDate{color-scheme:dark;background:linear-gradient(145deg,#222a2e,#1a2023)!important;color:#f4f5f1!important;border:1.5px solid #596469!important;box-shadow:inset 0 1px 0 #ffffff0a!important}
-input[type="date"]:focus,#date:focus,#coldStoreOutDate:focus,#eggExportDate:focus{border-color:#e98545!important;box-shadow:0 0 0 3px #e9854530!important}
-html body #mainApp .card-body.grid[style*="grid-template-columns"]>.field:not(.full)>input:not([type="date"]){background:#171e21!important;color:#f2f4f1!important;border-color:#424d51!important}
-input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.78) sepia(.7) saturate(2.4) hue-rotate(335deg);background-color:transparent;padding:4px;border-radius:7px}
-.date-display{background:#2a3337;border-color:#765036;color:#f4a263}
-html body #mainApp input[readonly],html body #mainApp input:disabled,html body #mainApp textarea[readonly],html body #mainApp textarea:disabled,html body #mainApp input[name="feedStart"],html body #mainApp input[name="feed2Start"]{background:#293236!important;background-color:#293236!important;background-image:none!important;color:#c2cbc6!important;-webkit-text-fill-color:#c2cbc6!important;border:1px solid #4b575b!important;box-shadow:inset 0 0 0 1000px #293236!important;opacity:1!important}
-.check{background:#252d31;border-color:#414c50;color:#e6ebe7}
-.check input,.card-body label.check input[type="checkbox"]{accent-color:#e98545}
-.actions{background:#1b2225!important;border-color:#3b4549;border-radius:15px;box-shadow:0 -6px 22px #0003}
-.btn{transition:filter .15s,transform .15s,border-color .15s}
-.btn:active{transform:translateY(1px)}
-.primary,#saveBtn,#saveEggExportBtn{background:linear-gradient(135deg,#c96d32,#ed914f)!important;color:#fff8f1!important;box-shadow:0 5px 15px #b85e2b38}
-.secondary,.outline{background:#252d31!important;border:1px solid #9b633f!important;color:#f1a064!important}
-#saveBtn{font-weight:850}
-#pdfBtn{background:#252d31!important;border:1px solid #a56a43!important;color:#f1a064!important}
-#toggleHistoryBtn{background:#252d31!important;border:1px solid #4a5559!important;color:#e8ece8!important}
-.history-item{border-color:#3b4549}
-.history-item strong{color:#f0f2ee}
-.history-item small{color:#aab5af}
-.history-item button,.photo-view-btn,.egg-export-record-actions button:not(:last-child){background:#303a3e!important;color:#f3a064!important;border:1px solid #4a5559}
-.photo-item img,.cold-evidence-item img,.cold-evidence-item video,.egg-export-file-item img,.egg-export-file-item video{background:#171e21}
-.photo-buttons button{background:#303a3e;color:#f1a064}
-.photo-view-btn{background:#303a3e;color:#f3a064}
-.photo-delete-btn,.cold-evidence-delete,.cold-recipient-remove,.remove-worker{background:#432b29!important;color:#f0998b!important;border:1px solid #75413a}
-.cold-recipient-add,.add-worker{background:#2a3336!important;border:1px dashed #98623f!important;color:#efa064!important}
-.draft-status{background:#222a2e!important;border:1px solid #3d484c!important;color:#b4beb8!important}
-.draft-status[style*="146c43"]{color:#9bd5a3!important}
-.draft-status[style*="b25f00"]{color:#f0a064!important}
-.photo-viewer{background:#101416f2}
-.photo-close{background:#303a3e;color:#f2f4f1}
-.photo-delete-current{background:#a7463d;color:#fff}
-.footer{color:#87938d}
-.farm-screen{background:#151a1d;color:#f2f4f1}
-.farm-panel{background:#151a1d;color:#f2f4f1}
-.farm-topbar,.farm-menu-head{background:#20272b!important;color:#f2f4f1;border-bottom:1px solid #3b4549;box-shadow:0 5px 18px #0004}
-.farm-brand-title,.farm-menu-head strong{color:#f2f4f1}
-.farm-brand-mark{color:#f0a064}
-.farm-content h2,.farm-panel h2{color:#f3f4f0}
-.farm-panel> .farm-content > p{color:#abb6b0}
-.farm-choice,.mode-choice,.work-menu-farm,.work-menu-empty,.farm-manage-item,.farm-add-row input{background:#232b2f!important;border-color:#3e494d!important;color:#edf1ed!important;box-shadow:none}
-.farm-choice-name,.mode-choice-copy strong,.farm-manage-name,.work-menu-farm,.app-nav-menu .farm-menu-action{color:#eef1ed!important}
-.farm-choice-sub,.mode-choice-copy small,.farm-section-title,.farm-menu-section-title,.work-menu-empty{color:#aeb8b3!important}
-.farm-choice-icon,.mode-choice-icon,.work-menu-farm:before{background:#3a3029!important;color:#f1a064!important}
-.farm-choice.is-selected,.work-menu-farm.is-current{background:#2c302e!important;border-color:#d17a42!important;box-shadow:0 0 0 2px #e9854520}
-.farm-enter,.work-menu-mode{background:linear-gradient(135deg,#c96d32,#ed914f)!important;color:#fff8f1!important;border:1px solid #e89152!important;box-shadow:0 5px 14px #a7522938}
-.farm-menu[hidden]{display:none!important}
-.farm-menu{background:#151a1d!important;color:#f2f4f1!important}
-.farm-menu-close{background:#2b3337!important;border-color:#805335!important;color:#f0a064!important}
-.farm-menu-section-title,.work-menu-section-title{color:#f1a064!important}
-.farm-manage-actions button{background:#30393d!important;border-color:#586367!important;color:#edf1ed!important}
-.farm-manage-actions .farm-delete,.farm-menu-logout{background:#432b29!important;border-color:#75413a!important;color:#f0998b!important}
-.farm-add-row button{background:#d77b40!important;color:#fff8f1!important}
-.app-nav-menu .farm-menu-action{background:#252d31!important;border-color:#465155!important}
-.app-nav-menu .farm-menu-action:hover{background:#31393c!important;border-color:#d77b40!important}
-.work-menu-farms{gap:9px}
-.work-menu-mode{background:#2b3337!important;border-color:#a2633d!important;color:#f0a064!important}
-.work-menu-bottom .farm-menu-action{background:#252d31!important;border-color:#465155!important;color:#edf1ed!important}
-.farm-error,.login-error{color:#f0998b!important}
-.login-screen{background:radial-gradient(ellipse at 50% 8%,#283135 0%,#171d20 55%,#101416 100%)!important;color:#f2f4f1!important}
-.login-scene h1{color:#f2f4f1!important}
-.login-subtitle{color:#b9c3be!important}
-.login-subtitle:before,.login-subtitle:after{background:#e98545!important}
-.login-card{background:#222a2e!important;border:1px solid #414c50!important;color:#f2f4f1!important;box-shadow:0 14px 38px #0006}
-.login-label{color:#e9eeea!important}
-.login-input-wrap{background:#171e21!important;border-color:#465156!important}
-.login-input-wrap input{background:transparent!important;color:#f2f4f1!important;-webkit-text-fill-color:#f2f4f1!important}
-.login-input-wrap input::placeholder{color:#89958f!important}
-.login-input-wrap:focus-within{border-color:#e98545!important;box-shadow:0 0 0 3px #e9854528!important}
-.login-button{background:linear-gradient(135deg,#c96d32,#ed914f)!important;color:#fff8f1!important;box-shadow:0 5px 14px #0004}
-.login-secure{color:#aeb8b3!important}
-.login-landscape{opacity:.3}
-.egg-export-screen{background:#151a1d!important;color:#f2f4f1!important}
-#eggExportScreen .egg-export-content{background:transparent!important}
-.egg-export-signature-open{background:#30383c!important;border-color:#9b633f!important;color:#f1a064!important}
-#eggExportSignature{background:#fff!important;border:1px solid #566165!important}
-#eggExportSignatureFullscreen{background:#151a1d!important;color:#f2f4f1!important}
-.egg-signature-fullscreen-head{background:linear-gradient(#151a1df2,#151a1db8,transparent)!important}
-.egg-signature-fullscreen-head strong{background:#252d31e8!important;color:#f2f4f1!important}
-.egg-signature-fullscreen-head button,.egg-signature-fullscreen-foot button{background:#c96d32!important;border-color:#ed914f!important;color:#fff8f1!important;box-shadow:0 3px 12px #0006}
-.egg-signature-fullscreen-head #eggExportFullscreenClearBtn{background:#432b29!important;border-color:#75413a!important;color:#f0998b!important}
-.egg-signature-fullscreen-foot.signature-hint{background:#252d31ed!important;border-color:#515d61!important;color:#e7ece8!important}
-.egg-export-record{background:#252d31!important}
-.egg-export-record-meta strong{color:#f1f3ef!important}
-.egg-export-record-meta small{color:#acb7b1!important}
-.egg-export-record-actions button:last-child{background:#432b29!important;border:1px solid #75413a!important;color:#f0998b!important}
-.egg-export-printable{background:#fff!important;color:#111!important}
-.egg-export-printable h1{color:#222!important}
-.egg-export-printable th{background:#f1f2ef!important;color:#111!important}
-.egg-export-printable td{color:#111!important}
-#printEggExportBtn{background:#252d31!important;border:1px solid #a56a43!important;color:#f1a064!important;box-shadow:none!important}
-@media(max-width:420px){#mainApp .header h1,#eggExportScreen .header h1{font-size:16px;line-height:1.25}}
-@media(max-width:370px){.stat{padding:10px}.stat .label{font-size:10px}.stat strong{font-size:16px}}
-@media print{
- html body{background:#fff!important;color:#111!important}
- html,body,#mainApp,#eggExportScreen,.content,.egg-export-content{background:#fff!important;color:#111!important;max-width:none!important}
- #mainApp .header.header,#eggExportScreen .header.header,.stat,.card,.card-head,.card-body,.actions,.draft-status,.feed-group,.feed-total-group,.worker-card,.photo-item,.cold-evidence-item,.cold-recipient-card,.egg-export-record{background:#fff!important;color:#111!important;box-shadow:none!important}
- .header h1,.header p,.brand small,.card-head h2,.card-head p,.stat .label,.stat strong,.stat small,.note,.subhead,.footer{color:#111!important}
- .num{background:#eee!important;color:#111!important;border-color:#ccc!important}
- input,select,textarea,input[type="date"],#date,#coldStoreOutDate,#eggExportDate{background:#fff!important;color:#111!important;-webkit-text-fill-color:#111!important;border-color:#ccc!important;box-shadow:none!important;color-scheme:light}
- .result>span,.result>strong,#rEggCumulative>div{background:#f1f2ef!important;color:#111!important;border-color:#ccc!important}
- .actions,.btn,.no-print{box-shadow:none!important}
+ .photo-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:6px!important}
+ .photo-item{break-inside:avoid;min-width:0}
+ .photo-item img{height:120px!important;width:100%!important;object-fit:contain!important}
 }
 </style>
 </head>
@@ -854,11 +706,11 @@ html body #mainApp input[readonly],html body #mainApp input:disabled,html body #
 
    </div>
 <div id="rEggCumulative" style="display:grid;grid-template-columns:2fr 1fr;gap:8px;width:100%;box-sizing:border-box;">
-  <div style="background:#2d363a !important;border:1px solid #465256;border-radius:6px;padding:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;line-height:1.4;box-sizing:border-box;color:#f1a064 !important;min-width:0;overflow-wrap:anywhere;">
+  <div style="background:#e8f5e9 !important;border:1px solid #a5d6a7;border-radius:6px;padding:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;line-height:1.4;box-sizing:border-box;color:#198754 !important;min-width:0;overflow-wrap:anywhere;">
     TỔNG TRỨNG ĐÃ NHẶT
   </div>
-  <div style="background:#2d363a !important;border:1px solid #465256;border-radius:6px;padding:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:700;box-sizing:border-box;color:#f1a064 !important;min-width:0;">
-    <strong id="totalEggsSinceStart" style="color:#f1a064 !important;">0 quả</strong>
+  <div style="background:#e8f5e9 !important;border:1px solid #a5d6a7;border-radius:6px;padding:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:700;box-sizing:border-box;color:#198754 !important;min-width:0;">
+    <strong id="totalEggsSinceStart" style="color:#198754 !important;">0 quả</strong>
   </div>
 <p class="note">
  Tổng Trứng Đã Nhặt = Tổng Trứng Nhặt Từ Đầu Đàn Đến Hôm Nay.
