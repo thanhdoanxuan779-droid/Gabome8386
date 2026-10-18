@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#146c43">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <title>BÁO CÁO TRẠI GÀ BỐ MẸ</title>
 <style>
 :root{--green:#146c43;--green2:#198754;--bg:#f3f6f4;--text:#20312a;--muted:#718078;--line:#e5ebe7;--red:#dc3545;--blue:#2878d0}
@@ -386,7 +389,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     <label class="login-label" for="loginPassword">Mã truy cập</label>
     <div class="login-input-wrap">
       <span aria-hidden="true">🔒</span>
-      <input id="loginPassword" type="password" placeholder="Nhập mã truy cập" autocomplete="current-password">
+      <input id="loginPassword" type="password" placeholder="Nhập mã truy cập" autocomplete="off">
     </div>
     <div id="loginError" class="login-error" role="status" aria-live="polite"></div>
     <button id="loginBtn" type="button" class="login-button">VÀO ỨNG DỤNG</button>
@@ -724,8 +727,6 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 <div class="actions no-print">
  <button class="btn secondary" type="button" id="saveBtn">💾 Lưu báo cáo</button>
  <button class="btn primary" type="button" id="pdfBtn">📄 Xuất file PDF</button>
- <button class="btn outline" type="button" id="exportBtn">📄 Xuất JSON</button>
- <button class="btn outline" type="button" id="resetBtn">＋ Báo cáo mới</button>
 </div>
 </div>
 
@@ -736,12 +737,14 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 'use strict';
 
 const WORKER_URL='https://baocaotraigabome9600con.skzfzqcdfx-08b.workers.dev';
-const PASSWORD_KEY='chickenFarmWorkerPassword';
+const LEGACY_PASSWORD_KEY='chickenFarmWorkerPassword';
 const DRAFT_PREFIX='chickenFarmDraft_';
 const COLD_STORE_DRAFT_PREFIX='chickenFarmColdStoreDraft_';
 const FARM_KEY='chickenFarmSelectedId';
 const DEFAULT_FARM_ID='farm_default_9600';
 const PHOTO_DB_NAME='chickenFarmPhotoDrafts';
+let sessionPassword='';
+try{localStorage.removeItem(LEGACY_PASSWORD_KEY);}catch(e){}
 const form=document.getElementById('reportForm');
 const $=s=>document.querySelector(s);
 const fields=[...form.querySelectorAll('input[name],select[name],textarea[name]')];
@@ -870,9 +873,9 @@ async function restorePhotoDraft(date){
 }
 
 async function getPassword(){
- const password=localStorage.getItem(PASSWORD_KEY);
- if(!password) throw new Error('Vui lòng đăng nhập lại.');
- return password;
+	const password=sessionPassword;
+	if(!password) throw new Error('Vui lòng đăng nhập lại.');
+	return password;
 }
 
 async function api(path,options={}){
@@ -1302,18 +1305,20 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&farmMenu&&!farmMenu.hidden)setFarmMenuOpen(false);});
 
 async function validateLogin(password){
- const error=$('#loginError');
- const btn=$('#loginBtn');
- error.textContent='';
- if(!password){error.textContent='Vui lòng nhập mã truy cập.';return;}
- btn.disabled=true;btn.textContent='ĐANG KIỂM TRA…';
- try{
-  const res=await fetch(WORKER_URL+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
-  const result=await res.json();
-  if(!res.ok||!result.ok){localStorage.removeItem(PASSWORD_KEY);error.textContent=result.error||'Mã truy cập không đúng. Vui lòng thử lại.';$('#loginPassword').value='';$('#loginPassword').focus();return;}
-  localStorage.setItem(PASSWORD_KEY,password);
-  await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
- }catch(e){error.textContent='Không kết nối được máy chủ: '+e.message;}
+	const error=$('#loginError');
+	const btn=$('#loginBtn');
+	error.textContent='';
+	if(!password){error.textContent='Vui lòng nhập mã truy cập.';return;}
+	sessionPassword='';
+	btn.disabled=true;btn.textContent='ĐANG KIỂM TRA…';
+	try{
+	 const res=await fetch(WORKER_URL+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
+	 const result=await res.json();
+	 if(!res.ok||!result.ok){sessionPassword='';error.textContent=result.error||'Mã truy cập không đúng. Vui lòng thử lại.';$('#loginPassword').value='';$('#loginPassword').focus();return;}
+	 sessionPassword=password;
+	 $('#loginPassword').value='';
+	 await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+	}catch(e){error.textContent='Không kết nối được máy chủ: '+e.message;}
  finally{btn.disabled=false;btn.textContent='VÀO ỨNG DỤNG　→';}
 }
 
@@ -2474,27 +2479,6 @@ fields.forEach(el=>{
 $('#saveBtn').addEventListener('click',save);
 $('#pdfBtn').addEventListener('click',exportPDF);
 
-$('#resetBtn').addEventListener('click',()=>{
- if(!confirm('Tạo báo cáo mới cho hôm nay? Nháp cũ vẫn được giữ theo từng ngày.')) return;
- restoreDraft(today(),true);
- restoreColdStoreDraft(today());
- calc();
- window.scrollTo({top:0,behavior:'smooth'});
-});
-
-$('#exportBtn').addEventListener('click',()=>{
- const data=getData();
- const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a');
- a.href=url;
- a.download='bao-cao-trai-ga-'+(data.date||today())+'.json';
- document.body.appendChild(a);
- a.click();
- a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
-});
-
 function renderPhotos(){
  const list=$('#photoList');
  list.innerHTML='';
@@ -2694,30 +2678,6 @@ $('#photos').addEventListener('change', async function () {
     input.value='';
   }
 });
-/* TỰ ĐĂNG NHẬP - LUÔN KIỂM TRA ÍT NHẤT 1,5 GIÂY */
-async function autoLogin() {
-  const password=localStorage.getItem(PASSWORD_KEY);
-  if(!password)return;
-  const loginScreen=document.getElementById('loginScreen');
-  const mainApp=document.getElementById('mainApp');
-  const chooser=document.getElementById('farmSelectScreen');
-  const btn=document.getElementById('loginBtn');
-  if(loginScreen)loginScreen.style.display='block';
-  if(mainApp)mainApp.style.display='none';
-  if(chooser)chooser.style.display='none';
-  if(btn){btn.disabled=true;btn.textContent='Đang kiểm tra...';}
-  const startTime=Date.now();
-  try{
-    const res=await fetch(WORKER_URL+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
-    const result=await res.json();
-    const remaining=1500-(Date.now()-startTime);
-    if(remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));
-    if(!res.ok||!result.ok){localStorage.removeItem(PASSWORD_KEY);return;}
-    await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
-  }catch(e){console.error('Tự đăng nhập thất bại:',e);if(loginScreen)loginScreen.style.display='block';}
-  finally{if(btn){btn.disabled=false;btn.textContent='VÀO ỨNG DỤNG　→';}}
-}
-autoLogin();
 /* Giữ cuộn tự nhiên của trình duyệt khi bàn phím di động mở/đóng. */
 const toggleHistoryBtn = document.getElementById('toggleHistoryBtn');
 const historyPanel = document.getElementById('historyPanel');
