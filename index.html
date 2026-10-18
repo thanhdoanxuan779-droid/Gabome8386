@@ -191,7 +191,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-grid .field.full{grid-column:1/-1}
 .egg-export-signature-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 #eggExportSignature{display:block;width:100%;height:auto;margin-top:7px;border:1px solid var(--line);border-radius:10px;background:#fff;touch-action:none}
-.egg-export-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.egg-export-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
 .egg-export-actions .btn{width:100%;min-width:0;padding:12px 8px;font-size:13px}
 .egg-export-record{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}
 .egg-export-record+.egg-export-record{margin-top:8px}
@@ -201,8 +201,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-record-actions{display:flex;flex-wrap:wrap;gap:5px;flex:0 0 auto}
 .egg-export-record-actions button{border:0;border-radius:8px;padding:7px 9px;background:#e9f2ec;color:#146c43;font-weight:700;font-size:11px}
 .egg-export-record-actions button:last-child{background:#fff0f0;color:#dc3545}
-.egg-export-header-actions{display:flex;flex-wrap:wrap;gap:5px}
-.egg-export-header-actions button{border:1px solid #ffffff55;border-radius:8px;padding:7px 9px;background:#ffffff17;color:#fff;font-size:11px;font-weight:750;white-space:nowrap}
+.farm-menu-logout{display:flex;align-items:center;width:100%;margin:10px 0 0;padding:11px 12px;border:1px solid #e6c2b8;border-radius:10px;background:#fff1ed;color:#a63524;text-align:left;font-size:13px;font-weight:800}
 .egg-export-file-item{display:grid;gap:6px;min-width:0}
 .egg-export-file-item img,.egg-export-file-item video{display:block;width:100%;max-height:240px;object-fit:contain;background:#eef2ef;border-radius:8px}
 .egg-export-printable{display:none}
@@ -213,7 +212,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-print-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
 .egg-export-print-media img{max-width:100%;max-height:230px;object-fit:contain;border:1px solid #dfe6e1}
 .egg-export-print-signature{max-width:260px;max-height:100px;object-fit:contain;border-bottom:1px solid #333}
-@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-actions{grid-template-columns:1fr}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}}
+@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}}
 .photo-viewer{
  position:fixed;
  inset:0;
@@ -465,8 +464,9 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     <div class="farm-topbar">
       <span class="farm-brand-mark" aria-hidden="true">⌂</span>
       <span class="farm-brand-title">TRẠI GÀ BỐ MẸ</span>
-      <button id="modeSignOutBtn" type="button" class="farm-menu-toggle" aria-label="Đăng xuất">↩</button>
+      <button id="modeMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="modeMenu">☰</button>
     </div>
+    <div id="modeMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Menu</strong><button id="modeMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="modeMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
     <main class="farm-content">
       <h2 id="modeSelectTitle">Chọn chức năng</h2>
       <p>Chọn loại công việc bạn muốn thực hiện.</p>
@@ -503,6 +503,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
           <button id="createFarmBtn" type="button">＋ Thêm trại</button>
         </div>
       </div>
+      <button id="farmMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button>
     </div>
     <main class="farm-content">
       <h2 id="farmSelectTitle">Chọn trại</h2>
@@ -527,7 +528,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
  </div>
  <p>📋 Báo cáo hằng ngày · Đàn gà · Trứng · Cám · Thiết bị</p>
 		 <div class="farm-banner"><span>ĐANG LÀM VIỆC TẠI: <strong id="farmNameBadge">Chưa chọn</strong></span></div>
-		 <div id="dailyWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="dailyWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="dailyMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="dailyMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button></div></div>
+		 <div id="dailyWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="dailyWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="dailyMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="dailyMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button><button id="dailyMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
 </header>
 <main class="content">
  <div class="summary">
@@ -828,7 +829,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 	  </div>
   <p>Lập phiếu xuất trứng riêng theo trại, có minh chứng và chữ ký người nhận.</p>
 	  <div class="farm-banner"><span>ĐANG LÀM VIỆC TẠI: <strong id="eggExportFarmName">Chưa chọn</strong></span></div>
-	  <div id="eggExportWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="eggExportWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="eggExportMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="eggExportMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button></div></div>
+	  <div id="eggExportWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="eggExportWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="eggExportNewReportMenuBtn" type="button" class="farm-menu-action">＋ Phiếu mới</button><button id="eggExportMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="eggExportMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button><button id="eggExportMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
  </header>
  <main class="content egg-export-content">
   <div id="eggExportStatus" class="draft-status">Phiếu xuất kho và tệp được lưu trên thiết bị này.</div>
@@ -849,15 +850,10 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     </div>
    </section>
    <div class="egg-export-actions no-print">
+    <button id="printEggExportBtn" type="button" class="btn primary">📄 Xuất PDF</button>
     <button id="saveEggExportBtn" type="submit" class="btn secondary">💾 Lưu phiếu</button>
-    <button id="printEggExportBtn" type="button" class="btn primary">🖨️ In / Lưu PDF</button>
-    <button id="newEggExportBtn" type="button" class="btn secondary">＋ Phiếu mới</button>
    </div>
   </form>
-  <section class="card no-print">
-   <div class="card-head"><div class="num">2</div><div><h2>Phiếu xuất kho đã lưu trên thiết bị</h2><p>Chỉ hiển thị trên thiết bị và trình duyệt này</p></div></div>
-   <div class="card-body"><div id="eggExportReportsList"><div class="empty">Đang tải phiếu đã lưu…</div></div></div>
-  </section>
   <section id="eggExportPrintable" class="egg-export-printable" aria-label="Phiếu xuất kho trứng để in"></section>
  </main>
 </div>
@@ -1487,13 +1483,27 @@ async function switchFarm(){
 }
 
 async function switchDailyMode(){
-	 if(busy){alert('Đang lưu báo cáo hoặc tạo PDF. Vui lòng đợi xong rồi hãy đổi chức năng.');return;}
-	 if(reportDirty){
+		 if(busy){alert('Đang lưu báo cáo hoặc tạo PDF. Vui lòng đợi xong rồi hãy đổi chức năng.');return;}
+		 if(reportDirty){
 	  if(!confirm('Báo cáo ngày có thay đổi chưa gửi lên máy chủ. Nháp sẽ được lưu trên thiết bị trước khi đổi chức năng. Tiếp tục?'))return;
 	  const saved=await saveLocalDraft();
 	  if(!saved){alert('Không lưu được nháp trên thiết bị. Hãy thử lại trước khi đổi chức năng.');return;}
 	 }
-	 clearTimeout(draftTimer);reportDirty=false;reports=[];selectedFarm=null;showModeSelection();
+		 clearTimeout(draftTimer);reportDirty=false;reports=[];selectedFarm=null;showModeSelection();
+}
+async function signOutFromWorkMenu(){
+	 if(workMode==='egg-export'){
+	  if(!await confirmEggExportExit())return;
+	 }else{
+	  if(busy){alert('Đang lưu báo cáo hoặc tạo PDF. Vui lòng đợi xong rồi hãy đăng xuất.');return;}
+	  if(reportDirty){
+	   if(!confirm('Báo cáo có thay đổi chưa lưu. Lưu nháp trên thiết bị rồi đăng xuất?'))return;
+	   const saved=await saveLocalDraft();
+	   if(!saved){alert('Không lưu được nháp. Hãy thử lại trước khi đăng xuất.');return;}
+	  }
+	  clearTimeout(draftTimer);reportDirty=false;
+	 }
+	 showLoginScreen();
 }
 
 document.getElementById('createFarmBtn').addEventListener('click',createFarm);
@@ -1510,14 +1520,15 @@ document.getElementById('openEggExportBtn').addEventListener('click',()=>{
 	 workMode='egg-export';
 	 showFarmChooser(localStorage.getItem(FARM_KEY)||'');
 });
-document.getElementById('modeSignOutBtn').addEventListener('click',showLoginScreen);
 const farmMenuBtn=document.getElementById('farmMenuBtn');
 const farmMenu=document.getElementById('farmMenu');
 farmMenuBtn.addEventListener('click',e=>{e.stopPropagation();setFarmMenuOpen(farmMenu.hidden);});
 document.getElementById('farmMenuClose').addEventListener('click',()=>setFarmMenuOpen(false));
+document.getElementById('farmMenuSignOutBtn').addEventListener('click',()=>{setFarmMenuOpen(false);showLoginScreen();});
 const workNavigationMenus=[
 	 {menu:document.getElementById('dailyWorkMenu'),button:document.getElementById('dailyWorkMenuBtn'),close:document.getElementById('dailyWorkMenuClose')},
-	 {menu:document.getElementById('eggExportWorkMenu'),button:document.getElementById('eggExportWorkMenuBtn'),close:document.getElementById('eggExportWorkMenuClose')}
+	 {menu:document.getElementById('eggExportWorkMenu'),button:document.getElementById('eggExportWorkMenuBtn'),close:document.getElementById('eggExportWorkMenuClose')},
+	 {menu:document.getElementById('modeMenu'),button:document.getElementById('modeMenuBtn'),close:document.getElementById('modeMenuClose')}
 ];
 function setWorkNavigationMenuOpen(item,open){
 	 if(!item?.menu||!item?.button)return;
@@ -1531,6 +1542,8 @@ workNavigationMenus.forEach(item=>{
 });
 document.getElementById('dailyMenuChangeFarmBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);switchFarm();});
 document.getElementById('dailyMenuChangeModeBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);switchDailyMode();});
+document.getElementById('dailyMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);signOutFromWorkMenu();});
+document.getElementById('modeMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[2],false);showLoginScreen();});
 document.addEventListener('click',e=>{
 	 if(!farmMenu.hidden&&!farmMenu.contains(e.target)&&e.target!==farmMenuBtn&&!farmMenuBtn.contains(e.target))setFarmMenuOpen(false);
 	 workNavigationMenus.forEach(item=>{if(!item.menu.hidden&&!item.menu.contains(e.target)&&!item.button.contains(e.target))setWorkNavigationMenuOpen(item,false);});
@@ -3307,9 +3320,10 @@ $('#clearEggExportSignatureBtn').addEventListener('click',()=>{
 	 setEggExportSignature('');scheduleEggExportDraftSave();
 });
 $('#printEggExportBtn').addEventListener('click',()=>printEggExportReport());
-$('#newEggExportBtn').addEventListener('click',newEggExportReport);
+$('#eggExportNewReportMenuBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);newEggExportReport();});
 $('#eggExportMenuChangeFarmBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);switchEggExportFarm();});
 $('#eggExportMenuChangeModeBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);switchEggExportMode();});
+$('#eggExportMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);signOutFromWorkMenu();});
 window.addEventListener('afterprint',finishEggExportPrint);
 initEggExportSignature();
 
