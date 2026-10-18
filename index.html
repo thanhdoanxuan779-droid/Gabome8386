@@ -216,6 +216,7 @@ textarea{min-height:76px;resize:vertical}
 .egg-export-record-actions button{border:0;border-radius:8px;padding:7px 9px;background:#e9f2ec;color:#146c43;font-weight:700;font-size:11px}
 .egg-export-record-actions button:last-child{background:#fff0f0;color:#dc3545}
 .farm-menu-logout{display:flex;align-items:center;width:100%;margin:10px 0 0;padding:11px 12px;border:1px solid #e6c2b8;border-radius:10px;background:#fff1ed;color:#a63524;text-align:left;font-size:13px;font-weight:800}
+#dailyColdStoreExportDetails[hidden]{display:none!important}
 .egg-export-file-item{display:grid;gap:6px;min-width:0}
 .egg-export-file-item img,.egg-export-file-item video{display:block;width:100%;max-height:240px;object-fit:contain;background:#eef2ef;border-radius:8px}
 .egg-export-printable{display:none}
@@ -653,8 +654,9 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
  </div>
 </div>
 <p class="note">
- Tồn kho lạnh = tổng trứng bàn giao kho từ các ngày trước và hôm nay − tổng trứng đã xuất kho lạnh.
+ Tồn kho lạnh = tổng trứng bàn giao kho từ các ngày trước và hôm nay − tổng trứng đã xuất kho lạnh. Chi tiết người nhận, ảnh/video và chữ ký xem tại chức năng Xuất Kho trứng.
 </p>
+<div id="dailyColdStoreExportDetails" hidden>
 <div class="divider"></div>
 <p class="subhead">Thông tin xuất kho lạnh</p>
 <div class="grid">
@@ -666,7 +668,8 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
   <p class="note">Ảnh/video được lưu riêng trên thiết bị này theo từng người nhận, không gửi lên máy chủ và không đồng bộ sang thiết bị khác. Tối đa 100 MB mỗi tệp.</p>
  </div>
 </div>
-	   <div class="divider"></div>
+</div>
+		   <div class="divider"></div>
 	   <div class="grid">
     <div class="field"><label>Tỷ lệ đẻ (%)</label><input id="rRateInput" readonly value="0%"></div>
     <div class="field"><label>Tỷ lệ trứng đạt (%)</label><input id="rQualityInput" readonly value="0%"></div>
