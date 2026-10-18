@@ -409,6 +409,24 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .header-top-actions .farm-menu-toggle{border-color:#ffffff70;background:#ffffff18;color:#fff}
 .app-nav-menu .farm-menu-action{display:flex;align-items:center;width:100%;margin:6px 0;padding:11px 12px;border:1px solid #e5dfcf;border-radius:10px;background:#fffdf8;color:#20352a;text-align:left;font-size:13px;font-weight:750}
 .app-nav-menu .farm-menu-action:hover{border-color:#c6a15a;background:#f5efdf}
+#dailyWorkMenu.app-nav-menu,#eggExportWorkMenu.app-nav-menu{position:fixed;inset:0;z-index:100100;width:100vw;height:100vh;height:100dvh;max-height:none;overflow:auto;box-sizing:border-box;padding:0;border:0;border-radius:0;background:#f8f6ef;box-shadow:none}
+#dailyWorkMenu.app-nav-menu .farm-menu-head,#eggExportWorkMenu.app-nav-menu .farm-menu-head{position:sticky;top:0;z-index:3;min-height:64px;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border:0;background:#123b2a;color:#f8f3e5;box-shadow:0 4px 16px #09271930}
+#dailyWorkMenu.app-nav-menu .farm-menu-head strong,#eggExportWorkMenu.app-nav-menu .farm-menu-head strong{color:#f4e7bc;font-size:18px}
+#dailyWorkMenu.app-nav-menu .farm-menu-close,#eggExportWorkMenu.app-nav-menu .farm-menu-close{width:auto;height:40px;padding:0 14px;border:1px solid #c5a45b;border-radius:10px;background:#1c4d35;color:#f0d58b;font-size:14px;font-weight:800;white-space:nowrap}
+.work-menu-content{width:min(100%,760px);margin:0 auto;padding:8px 16px calc(24px + env(safe-area-inset-bottom))}
+.work-menu-section{padding:18px 0 4px}
+.work-menu-section-title{display:block;margin:0 0 10px;color:#173d2b;font-size:16px;font-weight:850}
+.work-menu-farms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:9px}
+.work-menu-farm{display:flex;align-items:center;gap:11px;min-height:62px;padding:11px 13px;border:1px solid #e1e5e1;border-radius:13px;background:#fff;color:#20352a;text-align:left;font-size:14px;font-weight:780;box-shadow:0 2px 8px #22332008}
+.work-menu-farm:before{content:'⌂';display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:#e7eee8;color:#174a31;font-size:20px}
+.work-menu-farm.is-current{border-color:#bd9a50;background:#fffdf6;box-shadow:0 0 0 2px #bd9a501c}
+.work-menu-empty{padding:12px;border:1px dashed #d5d9d5;border-radius:12px;background:#fff;color:#68766b;font-size:13px}
+.work-menu-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.work-menu-mode{display:flex;align-items:center;justify-content:center;gap:9px;min-height:58px;padding:12px 10px;border:1px solid #c6a15a;border-radius:12px;background:#173d2b;color:#fff;font-size:14px;font-weight:850;box-shadow:0 4px 12px #173d2b18}
+.work-menu-mode:active,.work-menu-farm:active{transform:translateY(1px)}
+.work-menu-bottom{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:18px}
+.work-menu-bottom .farm-menu-action,.work-menu-bottom .farm-menu-logout{justify-content:center;width:100%;min-height:48px;margin:0;border-radius:11px;text-align:center}
+body.work-menu-open{overflow:hidden}
 @media(max-width:420px){.farm-content{padding:20px 14px 28px}.farm-choice{min-height:72px;padding:10px 11px}.farm-menu{top:78px}.farm-manage-item{grid-template-columns:minmax(0,1fr)}.farm-manage-actions button{padding:8px 10px}}
 .pdf-farm-label{margin:5px 2px 10px;padding:8px 10px;border:1px solid #dce5df;border-radius:10px;background:#eff8f2;color:#146c43;font-size:12px;font-weight:750;overflow-wrap:anywhere}
 
@@ -539,11 +557,18 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     <h1>BÁO CÁO TRẠI GÀ BỐ MẸ</h1>
    </div>
   </div>
-				<div class="header-top-actions"><span class="tag" id="headerFlock">10.005 CON</span><button id="dailyWorkMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="dailyWorkMenu">☰</button></div>
+				<div class="header-top-actions"><span class="tag" id="headerFlock">10.005 CON</span><button id="dailyWorkMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="dailyWorkMenu">☰</button></div>
  </div>
  <p>📋 Báo cáo hằng ngày · Đàn gà · Trứng · Cám · Thiết bị</p>
 		 <div class="farm-banner"><span><strong id="farmNameBadge">Chưa chọn</strong></span></div>
-		 <div id="dailyWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="dailyWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="dailyMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="dailyMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button><button id="dailyMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
+		 <div id="dailyWorkMenu" class="farm-menu app-nav-menu" hidden role="dialog" aria-modal="true" aria-label="Trại và công việc">
+		  <div class="farm-menu-head"><strong>Trại và công việc</strong><button id="dailyWorkMenuClose" class="farm-menu-close" type="button" aria-label="Trở về báo cáo">← Trở về</button></div>
+		  <div class="work-menu-content">
+		   <section class="work-menu-section"><strong class="work-menu-section-title">Trại đang có</strong><div id="dailyWorkMenuFarms" class="work-menu-farms"></div></section>
+		   <section class="work-menu-section"><strong class="work-menu-section-title">Công việc</strong><div class="work-menu-modes"><button id="dailyMenuWriteReportBtn" type="button" class="work-menu-mode">📋 Viết Báo Cáo</button><button id="dailyMenuExportEggsBtn" type="button" class="work-menu-mode">🥚 Xuất Kho trứng</button></div></section>
+		   <div class="work-menu-bottom"><button id="dailyMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div>
+		  </div>
+		 </div>
 </header>
 <main class="content">
  <div class="summary">
@@ -842,11 +867,18 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 	 <header class="header" style="border-radius:20px;margin:10px;width:auto;box-sizing:border-box">
 	  <div class="top">
 	   <div class="brand"><div class="logo">🥚</div><div><small>QUẢN LÝ TRẠI</small><h1>PHIẾU XUẤT KHO TRỨNG</h1></div></div>
-	   <button id="eggExportWorkMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="eggExportWorkMenu">☰</button>
+	   <button id="eggExportWorkMenuBtn" type="button" class="farm-menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="eggExportWorkMenu">☰</button>
 	  </div>
   <p>Lập phiếu xuất trứng riêng theo trại, có minh chứng và chữ ký người nhận.</p>
 	  <div class="farm-banner"><span><strong id="eggExportFarmName">Chưa chọn</strong></span></div>
-	  <div id="eggExportWorkMenu" class="farm-menu app-nav-menu" hidden><div class="farm-menu-head"><strong>Điều hướng</strong><button id="eggExportWorkMenuClose" class="farm-menu-close" type="button" aria-label="Đóng menu">×</button></div><div class="farm-menu-section"><button id="eggExportNewReportMenuBtn" type="button" class="farm-menu-action">＋ Phiếu mới</button><button id="eggExportMenuChangeFarmBtn" type="button" class="farm-menu-action">Đổi trại</button><button id="eggExportMenuChangeModeBtn" type="button" class="farm-menu-action">Chọn chức năng</button><button id="eggExportMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div></div>
+	  <div id="eggExportWorkMenu" class="farm-menu app-nav-menu" hidden role="dialog" aria-modal="true" aria-label="Trại và công việc">
+	   <div class="farm-menu-head"><strong>Trại và công việc</strong><button id="eggExportWorkMenuClose" class="farm-menu-close" type="button" aria-label="Trở về phiếu xuất trứng">← Trở về</button></div>
+	   <div class="work-menu-content">
+	    <section class="work-menu-section"><strong class="work-menu-section-title">Trại đang có</strong><div id="eggExportWorkMenuFarms" class="work-menu-farms"></div></section>
+	    <section class="work-menu-section"><strong class="work-menu-section-title">Công việc</strong><div class="work-menu-modes"><button id="eggExportMenuWriteReportBtn" type="button" class="work-menu-mode">📋 Viết Báo Cáo</button><button id="eggExportMenuExportEggsBtn" type="button" class="work-menu-mode">🥚 Xuất Kho trứng</button></div></section>
+	    <div class="work-menu-bottom"><button id="eggExportNewReportMenuBtn" type="button" class="farm-menu-action">＋ Phiếu mới</button><button id="eggExportMenuSignOutBtn" type="button" class="farm-menu-logout">Đăng xuất</button></div>
+	   </div>
+	  </div>
  </header>
  <main class="content egg-export-content">
   <div id="eggExportStatus" class="draft-status">Phiếu xuất kho và tệp được lưu trên thiết bị này.</div>
@@ -1549,24 +1581,66 @@ farmMenuBtn.addEventListener('click',e=>{e.stopPropagation();setFarmMenuOpen(far
 document.getElementById('farmMenuClose').addEventListener('click',()=>setFarmMenuOpen(false));
 document.getElementById('farmMenuSignOutBtn').addEventListener('click',()=>{setFarmMenuOpen(false);showLoginScreen();});
 const workNavigationMenus=[
-	 {menu:document.getElementById('dailyWorkMenu'),button:document.getElementById('dailyWorkMenuBtn'),close:document.getElementById('dailyWorkMenuClose')},
-	 {menu:document.getElementById('eggExportWorkMenu'),button:document.getElementById('eggExportWorkMenuBtn'),close:document.getElementById('eggExportWorkMenuClose')},
+	 {menu:document.getElementById('dailyWorkMenu'),button:document.getElementById('dailyWorkMenuBtn'),close:document.getElementById('dailyWorkMenuClose'),farmListId:'dailyWorkMenuFarms'},
+	 {menu:document.getElementById('eggExportWorkMenu'),button:document.getElementById('eggExportWorkMenuBtn'),close:document.getElementById('eggExportWorkMenuClose'),farmListId:'eggExportWorkMenuFarms'},
 	 {menu:document.getElementById('modeMenu'),button:document.getElementById('modeMenuBtn'),close:document.getElementById('modeMenuClose')}
 ];
+function renderWorkMenuFarms(listId){
+	 const list=document.getElementById(listId);if(!list)return;
+	 list.innerHTML='';
+	 if(!farms.length){const empty=document.createElement('div');empty.className='work-menu-empty';empty.textContent='Chưa có trại khả dụng.';list.appendChild(empty);return;}
+	 farms.forEach(farm=>{
+	  const isCurrent=farm.id===selectedFarm?.id;
+	  const button=document.createElement('button');button.type='button';button.className='work-menu-farm'+(isCurrent?' is-current':'');
+	  button.textContent=String(farm.name||'Trại không tên')+(isCurrent?' · Đang chọn':'');
+	  button.setAttribute('aria-current',isCurrent?'true':'false');
+	  button.addEventListener('click',()=>navigateFromWorkMenu(workMode,farm.id));
+	  list.appendChild(button);
+	 });
+}
 function setWorkNavigationMenuOpen(item,open){
 	 if(!item?.menu||!item?.button)return;
 	 item.menu.hidden=!open;
 	 item.button.setAttribute('aria-expanded',String(open));
-	 item.button.setAttribute('aria-label',open?'Đóng menu điều hướng':'Mở menu điều hướng');
+	 item.button.setAttribute('aria-label',open?'Đóng menu':'Mở menu');
+	 if(open&&item.farmListId)renderWorkMenuFarms(item.farmListId);
+	 document.body.classList.toggle('work-menu-open',workNavigationMenus.some(menu=>!menu.menu.hidden));
 }
 workNavigationMenus.forEach(item=>{
 	 item.button.addEventListener('click',e=>{e.stopPropagation();setWorkNavigationMenuOpen(item,item.menu.hidden);});
 	 item.close.addEventListener('click',()=>setWorkNavigationMenuOpen(item,false));
 });
-document.getElementById('dailyMenuChangeFarmBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);switchFarm();});
-document.getElementById('dailyMenuChangeModeBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);switchDailyMode();});
+async function navigateFromWorkMenu(nextMode=workMode,nextFarmId=selectedFarm?.id){
+	 const targetFarm=farms.find(farm=>farm.id===nextFarmId);
+	 if(!targetFarm){alert('Không tìm thấy trại đã chọn. Hãy tải lại danh sách trại.');return;}
+	 if(targetFarm.id===selectedFarm?.id&&nextMode===workMode){workNavigationMenus.forEach(item=>setWorkNavigationMenuOpen(item,false));return;}
+	 if(workMode==='egg-export'){
+	  if(!await confirmEggExportExit())return;
+	 }else{
+	  if(busy){alert('Đang lưu báo cáo hoặc tạo PDF. Vui lòng đợi xong rồi hãy chuyển trại/chức năng.');return;}
+	  if(reportDirty&&!confirm('Báo cáo hiện tại có thay đổi chưa lưu. Nháp sẽ được lưu trên thiết bị trước khi chuyển trại/chức năng. Tiếp tục?'))return;
+	  if(selectedFarm&&$('#date').value){
+	   const revisionBeforeSave=editRevision;const persisted=await saveLocalDraft();
+	   if(reportDirty&&!persisted){alert('Không lưu được nháp trên thiết bị. Hãy giải phóng dung lượng rồi thử lại.');return;}
+	   if(editRevision!==revisionBeforeSave){alert('Biểu mẫu vừa được chỉnh sửa trong lúc lưu nháp. Hãy đợi tự lưu xong rồi thử lại.');return;}
+	  }
+	  clearTimeout(draftTimer);reportDirty=false;
+	 }
+	 workMode=nextMode;reports=[];selectedFarm=null;
+	 workNavigationMenus.forEach(item=>setWorkNavigationMenuOpen(item,false));
+	 const chooser=document.getElementById('farmSelectScreen');
+	 document.getElementById('mainApp').style.display='none';
+	 document.getElementById('eggExportScreen').style.display='none';
+	 chooser.style.display='flex';renderFarmChooser(targetFarm.id);
+	 const error=document.getElementById('farmSelectError');if(error)error.textContent='Đang mở '+targetFarm.name+'…';
+	 await enterFarm(targetFarm.id);
+}
+document.getElementById('dailyMenuWriteReportBtn').addEventListener('click',()=>navigateFromWorkMenu('daily-report'));
+document.getElementById('dailyMenuExportEggsBtn').addEventListener('click',()=>navigateFromWorkMenu('egg-export'));
 document.getElementById('dailyMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[0],false);signOutFromWorkMenu();});
 document.getElementById('modeMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[2],false);showLoginScreen();});
+document.getElementById('eggExportMenuWriteReportBtn').addEventListener('click',()=>navigateFromWorkMenu('daily-report'));
+document.getElementById('eggExportMenuExportEggsBtn').addEventListener('click',()=>navigateFromWorkMenu('egg-export'));
 document.addEventListener('click',e=>{
 	 if(!farmMenu.hidden&&!farmMenu.contains(e.target)&&e.target!==farmMenuBtn&&!farmMenuBtn.contains(e.target))setFarmMenuOpen(false);
 	 workNavigationMenus.forEach(item=>{if(!item.menu.hidden&&!item.menu.contains(e.target)&&!item.button.contains(e.target))setWorkNavigationMenuOpen(item,false);});
@@ -3391,8 +3465,6 @@ document.addEventListener('fullscreenchange',()=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#eggExportSignatureFullscreen').hidden)closeEggExportSignaturePad();});
 $('#printEggExportBtn').addEventListener('click',()=>printEggExportReport());
 $('#eggExportNewReportMenuBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);newEggExportReport();});
-$('#eggExportMenuChangeFarmBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);switchEggExportFarm();});
-$('#eggExportMenuChangeModeBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);switchEggExportMode();});
 $('#eggExportMenuSignOutBtn').addEventListener('click',()=>{setWorkNavigationMenuOpen(workNavigationMenus[1],false);signOutFromWorkMenu();});
 window.addEventListener('afterprint',finishEggExportPrint);
 initEggExportSignature();
