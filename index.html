@@ -178,6 +178,42 @@ textarea{min-height:76px;resize:vertical}
 .cold-recipient-head strong{font-size:12px;color:var(--green)}
 .cold-recipient-remove{border:0;border-radius:8px;padding:7px 9px;background:#fff0f0;color:#dc3545;font-size:11px;font-weight:700}
 .cold-recipient-add{margin-top:10px;width:100%;border:1px dashed #a8c8b4;border-radius:10px;padding:10px;background:#eff8f2;color:var(--green);font-weight:750}
+.mode-list{display:grid;gap:12px;margin-top:22px}
+.mode-choice{display:flex;align-items:center;gap:14px;width:100%;min-height:88px;padding:15px;border:1px solid #e5e2da;border-radius:15px;background:#fffefa;color:#20352a;text-align:left;box-shadow:0 3px 12px #2233200c}
+.mode-choice:active{transform:translateY(1px)}
+.mode-choice-icon{width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px;border-radius:14px;background:#e8f5ed;color:var(--green);font-size:23px}
+.mode-choice-copy{display:grid;gap:4px;min-width:0}
+.mode-choice-copy strong{font-size:16px;color:#173d2b}
+.mode-choice-copy small{font-size:12px;color:#718078;line-height:1.4}
+.egg-export-screen{width:100%;min-height:100vh;min-height:100dvh;background:#fff}
+.egg-export-content{max-width:860px;margin:0 auto;padding:12px}
+.egg-export-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.egg-export-grid .field.full{grid-column:1/-1}
+.egg-export-signature-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#eggExportSignature{display:block;width:100%;height:auto;margin-top:7px;border:1px solid var(--line);border-radius:10px;background:#fff;touch-action:none}
+.egg-export-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.egg-export-actions .btn{width:100%;min-width:0;padding:12px 8px;font-size:13px}
+.egg-export-record{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.egg-export-record+.egg-export-record{margin-top:8px}
+.egg-export-record-meta{display:grid;gap:3px;min-width:0}
+.egg-export-record-meta strong{overflow-wrap:anywhere}
+.egg-export-record-meta small{color:var(--muted)}
+.egg-export-record-actions{display:flex;flex-wrap:wrap;gap:5px;flex:0 0 auto}
+.egg-export-record-actions button{border:0;border-radius:8px;padding:7px 9px;background:#e9f2ec;color:#146c43;font-weight:700;font-size:11px}
+.egg-export-record-actions button:last-child{background:#fff0f0;color:#dc3545}
+.egg-export-header-actions{display:flex;flex-wrap:wrap;gap:5px}
+.egg-export-header-actions button{border:1px solid #ffffff55;border-radius:8px;padding:7px 9px;background:#ffffff17;color:#fff;font-size:11px;font-weight:750;white-space:nowrap}
+.egg-export-file-item{display:grid;gap:6px;min-width:0}
+.egg-export-file-item img,.egg-export-file-item video{display:block;width:100%;max-height:240px;object-fit:contain;background:#eef2ef;border-radius:8px}
+.egg-export-printable{display:none}
+.egg-export-printable h1{font-size:22px;text-align:center;color:#173d2b;margin:0 0 14px}
+.egg-export-printable table{width:100%;border-collapse:collapse;margin:12px 0}
+.egg-export-printable th,.egg-export-printable td{padding:8px;border:1px solid #cbd5ce;text-align:left;vertical-align:top}
+.egg-export-printable th{width:34%;background:#f2f6f3}
+.egg-export-print-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.egg-export-print-media img{max-width:100%;max-height:230px;object-fit:contain;border:1px solid #dfe6e1}
+.egg-export-print-signature{max-width:260px;max-height:100px;object-fit:contain;border-bottom:1px solid #333}
+@media(max-width:520px){.egg-export-grid{grid-template-columns:minmax(0,1fr)}.egg-export-grid .field.full{grid-column:auto}.egg-export-actions{grid-template-columns:1fr}.egg-export-record{align-items:flex-start;flex-direction:column}.egg-export-record-actions{width:100%}}
 .photo-viewer{
  position:fixed;
  inset:0;
@@ -268,6 +304,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 .header.header{width:calc(100% - 16px)!important;max-width:none!important;margin:8px!important;border-radius:20px!important;box-sizing:border-box}
 .content{width:100%;max-width:none;margin:0;padding:0 8px;box-sizing:border-box;background:#fff}
 .content>.summary,.content>.draft-status,.content>form{width:100%;max-width:none;box-sizing:border-box}
+#eggExportScreen .egg-export-content{width:100%;max-width:860px;margin:0 auto;padding:12px;box-sizing:border-box}
 .card{width:100%;max-width:none;box-sizing:border-box}
 .actions{width:calc(100% - 16px)!important;max-width:none!important;margin:10px 8px 0!important;box-sizing:border-box;background:#fff}
 .card-body,.grid,.field,.feed-group,.feed-total-group,.worker-fields{min-width:0;max-width:100%}
@@ -370,6 +407,10 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 #rEggCumulative>div{white-space:normal!important;overflow:visible!important;flex-wrap:wrap;line-height:1.3}
 #eggWarning{min-height:44px;display:flex;align-items:center;line-height:1.35;overflow-wrap:anywhere}
 @media print{
+ body.egg-export-printing #loginScreen,body.egg-export-printing #modeSelectScreen,body.egg-export-printing #farmSelectScreen,body.egg-export-printing #mainApp{display:none!important}
+ body.egg-export-printing #eggExportScreen{display:block!important;position:static!important;min-height:0!important}
+ body.egg-export-printing #eggExportScreen .header,body.egg-export-printing #eggExportScreen .egg-export-content>*:not(#eggExportPrintable){display:none!important}
+ body.egg-export-printing #eggExportPrintable{display:block!important;position:static!important;width:100%!important;padding:0!important;color:#111!important;background:#fff!important}
  html body input[readonly],html body input:disabled,html body textarea[readonly],html body textarea:disabled,html body input[name="feedStart"],html body input[name="feed2Start"]{
   background:#fff!important;background-color:#fff!important;background-image:none!important;color:#111!important;-webkit-text-fill-color:#111!important;border-color:transparent!important;box-shadow:none!important;opacity:1!important
  }
@@ -415,6 +456,29 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     </svg>
   </div>
 </div>
+<div id="modeSelectScreen" class="farm-screen" role="dialog" aria-modal="true" aria-labelledby="modeSelectTitle">
+  <div class="farm-panel">
+    <div class="farm-topbar">
+      <span class="farm-brand-mark" aria-hidden="true">⌂</span>
+      <span class="farm-brand-title">TRẠI GÀ BỐ MẸ</span>
+      <button id="modeSignOutBtn" type="button" class="farm-menu-toggle" aria-label="Đăng xuất">↩</button>
+    </div>
+    <main class="farm-content">
+      <h2 id="modeSelectTitle">Chọn chức năng</h2>
+      <p>Chọn loại công việc bạn muốn thực hiện.</p>
+      <div class="mode-list">
+        <button id="writeDailyReportBtn" type="button" class="mode-choice">
+          <span class="mode-choice-icon" aria-hidden="true">📋</span>
+          <span class="mode-choice-copy"><strong>Viết Báo Cáo</strong><small>Vào báo cáo chăn nuôi hằng ngày và chọn trại.</small></span>
+        </button>
+        <button id="openEggExportBtn" type="button" class="mode-choice">
+          <span class="mode-choice-icon" aria-hidden="true">🥚</span>
+          <span class="mode-choice-copy"><strong>Xuất Kho trứng</strong><small>Chọn trại rồi lập phiếu xuất trứng, đính kèm ảnh/video và chữ ký.</small></span>
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
 <div id="farmSelectScreen" class="farm-screen" role="dialog" aria-modal="true" aria-labelledby="farmSelectTitle">
   <div class="farm-panel">
     <div class="farm-topbar">
@@ -438,7 +502,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     </div>
     <main class="farm-content">
       <h2 id="farmSelectTitle">Chọn trại</h2>
-      <p>Vui lòng chọn trại để tiếp tục làm việc.</p>
+      <p id="farmSelectDescription">Vui lòng chọn trại để tiếp tục làm việc.</p>
       <div id="farmList" class="farm-list"></div>
       <div id="farmSelectError" class="farm-error" role="status" aria-live="polite"></div>
       <button id="enterFarmBtn" type="button" class="farm-enter" disabled>Vào trại đã chọn</button>
@@ -455,10 +519,10 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
     <h1>BÁO CÁO TRẠI GÀ BỐ MẸ</h1>
    </div>
   </div>
-  <span class="tag" id="headerFlock">10.005 CON</span>
+			<span class="tag" id="headerFlock">10.005 CON</span>
  </div>
  <p>📋 Báo cáo hằng ngày · Đàn gà · Trứng · Cám · Thiết bị</p>
- <div class="farm-banner"><span>ĐANG LÀM VIỆC TẠI: <strong id="farmNameBadge">Chưa chọn</strong></span><button type="button" id="changeFarmBtn">Đổi trại</button></div>
+	 <div class="farm-banner"><span>ĐANG LÀM VIỆC TẠI: <strong id="farmNameBadge">Chưa chọn</strong></span><span class="egg-export-header-actions"><button type="button" id="changeFarmBtn">Đổi trại</button><button type="button" id="changeModeFromDailyBtn">Chọn chức năng</button></span></div>
 </header>
 <main class="content">
  <div class="summary">
@@ -751,6 +815,46 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 </div>
 </div>
 
+<div id="eggExportScreen" class="egg-export-screen" style="display:none">
+ <header class="header" style="border-radius:20px;margin:10px;width:auto;box-sizing:border-box">
+  <div class="top">
+   <div class="brand"><div class="logo">🥚</div><div><small>QUẢN LÝ TRẠI</small><h1>PHIẾU XUẤT KHO TRỨNG</h1></div></div>
+  </div>
+  <p>Lập phiếu xuất trứng riêng theo trại, có minh chứng và chữ ký người nhận.</p>
+  <div class="farm-banner"><span>ĐANG LÀM VIỆC TẠI: <strong id="eggExportFarmName">Chưa chọn</strong></span><span class="egg-export-header-actions"><button type="button" id="eggExportChangeFarmBtn">Đổi trại</button><button type="button" id="eggExportChangeModeBtn">Chọn chức năng</button></span></div>
+ </header>
+ <main class="content egg-export-content">
+  <div id="eggExportStatus" class="draft-status">Phiếu xuất kho và tệp được lưu trên thiết bị này.</div>
+  <form id="eggExportForm">
+   <section class="card">
+    <div class="card-head"><div class="num">1</div><div><h2>Thông tin xuất trứng</h2><p>Ghi ngày xuất, số lượng và người nhận</p></div></div>
+    <div class="card-body egg-export-grid">
+     <div class="field"><label for="eggExportDate">Ngày xuất trứng</label><input id="eggExportDate" type="date" required></div>
+     <div class="field"><label for="eggExportQuantity">Số lượng xuất (quả)</label><input id="eggExportQuantity" type="number" min="1" step="1" inputmode="numeric" placeholder="Nhập số lượng" required></div>
+     <div class="field full"><label for="eggExportRecipient">Tên người nhận trứng</label><input id="eggExportRecipient" type="text" maxlength="160" placeholder="Họ tên người nhận" required></div>
+     <div class="field full"><label for="eggExportNote">Ghi chú</label><textarea id="eggExportNote" rows="3" placeholder="Ghi chú về lô trứng, phương tiện hoặc tình trạng bàn giao..."></textarea></div>
+     <div class="field full"><label for="eggExportFiles">Ảnh / video minh chứng</label><input id="eggExportFiles" type="file" accept="image/*,video/*" multiple><div id="eggExportFileList" class="cold-evidence-list" aria-live="polite"></div><p class="note">Tệp minh chứng được lưu riêng trên thiết bị này, không tải lên máy chủ. Tối đa 100 MB mỗi tệp.</p></div>
+     <div class="field full">
+      <div class="egg-export-signature-head"><label for="eggExportSignature">Chữ ký người nhận trứng</label><button id="clearEggExportSignatureBtn" type="button" class="cold-evidence-delete">Xóa chữ ký</button></div>
+      <canvas id="eggExportSignature" width="1200" height="400" aria-label="Vùng ký tên bằng ngón tay hoặc chuột"></canvas>
+      <p class="note">Ký trực tiếp bằng ngón tay trên điện thoại hoặc dùng chuột. Chữ ký không bắt buộc.</p>
+     </div>
+    </div>
+   </section>
+   <div class="egg-export-actions no-print">
+    <button id="saveEggExportBtn" type="submit" class="btn secondary">💾 Lưu phiếu</button>
+    <button id="printEggExportBtn" type="button" class="btn primary">🖨️ In / Lưu PDF</button>
+    <button id="newEggExportBtn" type="button" class="btn secondary">＋ Phiếu mới</button>
+   </div>
+  </form>
+  <section class="card no-print">
+   <div class="card-head"><div class="num">2</div><div><h2>Phiếu xuất kho đã lưu trên thiết bị</h2><p>Chỉ hiển thị trên thiết bị và trình duyệt này</p></div></div>
+   <div class="card-body"><div id="eggExportReportsList"><div class="empty">Đang tải phiếu đã lưu…</div></div></div>
+  </section>
+  <section id="eggExportPrintable" class="egg-export-printable" aria-label="Phiếu xuất kho trứng để in"></section>
+ </main>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
@@ -763,8 +867,10 @@ const DRAFT_PREFIX='chickenFarmDraft_';
 const COLD_STORE_DRAFT_PREFIX='chickenFarmColdStoreDraft_';
 const FARM_KEY='chickenFarmSelectedId';
 const DEFAULT_FARM_ID='farm_default_9600';
+const EGG_EXPORT_LOCAL_PREFIX='chickenFarmEggExportLocal_';
 const PHOTO_DB_NAME='chickenFarmPhotoDrafts';
 const COLD_STORE_MEDIA_DB='chickenFarmColdStoreMedia';
+const EGG_EXPORT_DB_NAME='chickenFarmEggExportReports';
 let sessionPassword='';
 try{localStorage.removeItem(LEGACY_PASSWORD_KEY);}catch(e){}
 const form=document.getElementById('reportForm');
@@ -792,6 +898,22 @@ let coldStoreMediaUrls=[];
 let coldStoreRecipients=[];
 let coldStoreEvidenceRecords=[];
 let coldStoreUploadBusy=false;
+let workMode='daily-report';
+let eggExportDbPromise=null;
+let eggExportRecords=[];
+let eggExportAttachments=[];
+let eggExportObjectUrls=[];
+let eggExportPrintUrls=[];
+let currentEggExportId='';
+let eggExportSignatureData='';
+let eggExportSignatureToken=0;
+let eggExportSignatureDrawing=false;
+let eggExportDirty=false;
+let eggExportLoading=false;
+let eggExportSaving=false;
+let eggExportDraftTimer=null;
+let eggExportDraftQueue=Promise.resolve();
+let eggExportPrintOldTitle='';
 let reports=[];
 let farms=[];
 let selectedFarm=null;
@@ -1139,7 +1261,7 @@ async function refreshFarms(){
 }
 
 function hasLocalFarmDrafts(farmId){
- const prefixes=[DRAFT_PREFIX+encodeURIComponent(farmId)+'_',COLD_STORE_DRAFT_PREFIX+encodeURIComponent(farmId)+'_'];
+	 const prefixes=[DRAFT_PREFIX+encodeURIComponent(farmId)+'_',COLD_STORE_DRAFT_PREFIX+encodeURIComponent(farmId)+'_',EGG_EXPORT_LOCAL_PREFIX+encodeURIComponent(farmId)+'_'];
  try{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key&&prefixes.some(prefix=>key.startsWith(prefix)))return true;}}catch(e){}
  return false;
 }
@@ -1176,7 +1298,7 @@ function renderFarmManagement(){
   del.title=del.disabled?'Không thể xóa trại mặc định':'';
   del.setAttribute('aria-label','Xóa trại '+farm.name);
   del.addEventListener('click',async()=>{
-   if(hasLocalFarmDrafts(farm.id)){if(error)error.textContent='Trại còn nháp trên thiết bị này. Hãy lưu hoặc xuất nháp trước khi xóa.';return;}
+	   if(hasLocalFarmDrafts(farm.id)){if(error)error.textContent='Trại còn nháp báo cáo hoặc phiếu xuất kho trên thiết bị này. Hãy xử lý dữ liệu cục bộ trước khi xóa trại.';return;}
    if(!confirm('Xóa trại “'+farm.name+'”? Trại có báo cáo sẽ bị máy chủ từ chối xóa.'))return;
    try{await api('/api/farms/'+encodeURIComponent(farm.id),{method:'DELETE'});if(localStorage.getItem(FARM_KEY)===farm.id)localStorage.removeItem(FARM_KEY);await refreshFarms();}
    catch(e){if(error)error.textContent=e.message;}
@@ -1185,11 +1307,17 @@ function renderFarmManagement(){
  });
 }
 function renderFarmChooser(preferredId){
- const list=document.getElementById('farmList');
- const error=document.getElementById('farmSelectError');
- const enter=document.getElementById('enterFarmBtn');
- if(!list||!enter)return;
- list.innerHTML='';
+	 const list=document.getElementById('farmList');
+	 const error=document.getElementById('farmSelectError');
+	 const enter=document.getElementById('enterFarmBtn');
+	 if(!list||!enter)return;
+	 const exportMode=workMode==='egg-export';
+	 const title=document.getElementById('farmSelectTitle');
+	 const description=document.getElementById('farmSelectDescription');
+	 if(title)title.textContent=exportMode?'Chọn trại để xuất kho trứng':'Chọn trại để viết báo cáo';
+	 if(description)description.textContent=exportMode?'Chọn trại cần lập phiếu xuất kho trứng.':'Chọn trại cần viết báo cáo hằng ngày.';
+	 enter.textContent=exportMode?'Vào mục Xuất Kho trứng':'Vào trại đã chọn';
+	 list.innerHTML='';
  if(error)error.textContent='';
  const remembered=preferredId||localStorage.getItem(FARM_KEY)||'';
  farms.forEach(farm=>{
@@ -1202,7 +1330,7 @@ function renderFarmChooser(preferredId){
   icon.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 3l9 7M5 9v11h14V9M9 20v-6h6v6"/></svg>';
   const meta=document.createElement('span');meta.className='farm-choice-meta';
   const name=document.createElement('span');name.className='farm-choice-name';name.textContent=farm.name;
-  const sub=document.createElement('small');sub.className='farm-choice-sub';sub.textContent='Báo cáo và lịch sử riêng của trại';
+	  const sub=document.createElement('small');sub.className='farm-choice-sub';sub.textContent=exportMode?'Phiếu xuất trứng riêng của trại':'Báo cáo và lịch sử riêng của trại';
   meta.append(name,sub);
   radio.addEventListener('change',()=>{
    enter.disabled=false;
@@ -1221,14 +1349,40 @@ function renderFarmChooser(preferredId){
  }
  renderFarmManagement();
 }
+function showModeSelection(){
+	 const login=document.getElementById('loginScreen');
+	 const mode=document.getElementById('modeSelectScreen');
+	 const chooser=document.getElementById('farmSelectScreen');
+	 const app=document.getElementById('mainApp');
+	 const exportScreen=document.getElementById('eggExportScreen');
+	 if(login)login.style.display='none';
+	 if(chooser)chooser.style.display='none';
+	 if(app)app.style.display='none';
+	 if(exportScreen)exportScreen.style.display='none';
+	 if(mode)mode.style.display='flex';
+}
+function showLoginScreen(){
+	 sessionPassword='';
+	 selectedFarm=null;
+	 workMode='daily-report';
+	 document.getElementById('modeSelectScreen').style.display='none';
+	 document.getElementById('farmSelectScreen').style.display='none';
+	 document.getElementById('mainApp').style.display='none';
+	 document.getElementById('eggExportScreen').style.display='none';
+	 document.getElementById('loginScreen').style.display='flex';
+}
 async function showFarmChooser(preferredId){
- const login=document.getElementById('loginScreen');
- const app=document.getElementById('mainApp');
- const chooser=document.getElementById('farmSelectScreen');
- const error=document.getElementById('farmSelectError');
- if(login)login.style.display='none';
- if(app)app.style.display='none';
- if(chooser)chooser.style.display='flex';
+	 const login=document.getElementById('loginScreen');
+	 const mode=document.getElementById('modeSelectScreen');
+	 const app=document.getElementById('mainApp');
+	 const exportScreen=document.getElementById('eggExportScreen');
+	 const chooser=document.getElementById('farmSelectScreen');
+	 const error=document.getElementById('farmSelectError');
+	 if(login)login.style.display='none';
+	 if(mode)mode.style.display='none';
+	 if(app)app.style.display='none';
+	 if(exportScreen)exportScreen.style.display='none';
+	 if(chooser)chooser.style.display='flex';
  farms=[];
  renderFarmChooser(preferredId);
  if(error)error.textContent='Đang tải danh sách trại…';
@@ -1265,11 +1419,20 @@ async function enterFarm(farmId){
  const enter=document.getElementById('enterFarmBtn');
  const oldEnterText=enter?.textContent||'Vào trại đã chọn';
  if(!farm){if(error)error.textContent='Trại đã chọn không còn khả dụng. Hãy tải lại danh sách.';return;}
- if(enter){enter.disabled=true;enter.textContent='Đang mở trại…';}
- try{
-  selectedFarm=farm;
-  localStorage.setItem(FARM_KEY,farm.id);
-  await migrateLegacyLocalDrafts(farm.id);
+	 if(enter){enter.disabled=true;enter.textContent='Đang mở trại…';}
+	 try{
+	  selectedFarm=farm;
+	  localStorage.setItem(FARM_KEY,farm.id);
+	  if(workMode==='egg-export'){
+	   document.getElementById('eggExportFarmName').textContent=farm.name;
+	   await loadEggExportWorkspace(farm);
+	   if(token!==farmEntryToken||selectedFarm?.id!==farmId)return;
+	   document.getElementById('farmSelectScreen').style.display='none';
+	   document.getElementById('mainApp').style.display='none';
+	   document.getElementById('eggExportScreen').style.display='block';
+	   return;
+	  }
+	  await migrateLegacyLocalDrafts(farm.id);
   setReportFarmName(farm.name);
   const loaded=await loadHistory();
   if(token!==farmEntryToken||selectedFarm?.id!==farmId)return;
@@ -1313,16 +1476,36 @@ async function switchFarm(){
  reportDirty=false;
  reports=[];
  selectedFarm=null;
- await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+	 await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+}
+
+async function switchDailyMode(){
+	 if(busy){alert('Đang lưu báo cáo hoặc tạo PDF. Vui lòng đợi xong rồi hãy đổi chức năng.');return;}
+	 if(reportDirty){
+	  if(!confirm('Báo cáo ngày có thay đổi chưa gửi lên máy chủ. Nháp sẽ được lưu trên thiết bị trước khi đổi chức năng. Tiếp tục?'))return;
+	  const saved=await saveLocalDraft();
+	  if(!saved){alert('Không lưu được nháp trên thiết bị. Hãy thử lại trước khi đổi chức năng.');return;}
+	 }
+	 clearTimeout(draftTimer);reportDirty=false;reports=[];selectedFarm=null;showModeSelection();
 }
 
 document.getElementById('createFarmBtn').addEventListener('click',createFarm);
 document.getElementById('newFarmName').addEventListener('keydown',e=>{if(e.key==='Enter')createFarm();});
 document.getElementById('enterFarmBtn').addEventListener('click',()=>{
- const radio=document.querySelector('input[name="selectedFarm"]:checked');
- if(radio)enterFarm(radio.value);
+	 const radio=document.querySelector('input[name="selectedFarm"]:checked');
+	 if(radio)enterFarm(radio.value);
 });
+document.getElementById('writeDailyReportBtn').addEventListener('click',()=>{
+	 workMode='daily-report';
+	 showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+});
+document.getElementById('openEggExportBtn').addEventListener('click',()=>{
+	 workMode='egg-export';
+	 showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+});
+document.getElementById('modeSignOutBtn').addEventListener('click',showLoginScreen);
 document.getElementById('changeFarmBtn').addEventListener('click',switchFarm);
+document.getElementById('changeModeFromDailyBtn').addEventListener('click',switchDailyMode);
 const farmMenuBtn=document.getElementById('farmMenuBtn');
 const farmMenu=document.getElementById('farmMenu');
 farmMenuBtn.addEventListener('click',e=>{e.stopPropagation();setFarmMenuOpen(farmMenu.hidden);});
@@ -1345,7 +1528,7 @@ async function validateLogin(password){
 	 if(!res.ok||!result.ok){sessionPassword='';error.textContent=result.error||'Mã truy cập không đúng. Vui lòng thử lại.';$('#loginPassword').value='';$('#loginPassword').focus();return;}
 	 sessionPassword=password;
 	 $('#loginPassword').value='';
-	 await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+		 showModeSelection();
 	}catch(e){error.textContent='Không kết nối được máy chủ: '+e.message;}
  finally{btn.disabled=false;btn.textContent='VÀO ỨNG DỤNG　→';}
 }
@@ -2756,6 +2939,353 @@ $('#addColdStoreRecipientBtn').addEventListener('click',()=>{
 	 renderColdStoreRecipients();
 	 scheduleDraftSave();
 });
+
+function openEggExportDb(){
+	 if(!('indexedDB' in window)) return Promise.reject(new Error('Trình duyệt không hỗ trợ lưu phiếu IndexedDB.'));
+	 if(eggExportDbPromise) return eggExportDbPromise;
+	 eggExportDbPromise=new Promise((resolve,reject)=>{
+	  let request;
+	  try{request=indexedDB.open(EGG_EXPORT_DB_NAME,1);}catch(e){eggExportDbPromise=null;reject(e);return;}
+	  request.onupgradeneeded=()=>{
+	   const db=request.result;
+	   if(!db.objectStoreNames.contains('reports')){
+	    const store=db.createObjectStore('reports',{keyPath:'id'});
+	    store.createIndex('byFarm','farmId',{unique:false});
+	    store.createIndex('byFarmDate',['farmId','date'],{unique:false});
+	   }
+	  };
+	  request.onsuccess=()=>{const db=request.result;db.onversionchange=()=>{db.close();eggExportDbPromise=null;};resolve(db);};
+	  request.onerror=()=>{eggExportDbPromise=null;reject(request.error||new Error('Không mở được kho phiếu xuất trứng.'));};
+	  request.onblocked=()=>{eggExportDbPromise=null;reject(new Error('Kho phiếu đang bị khóa bởi tab khác.'));};
+	 });
+	 return eggExportDbPromise;
+}
+
+function eggExportDraftId(farmId){return 'draft::'+String(farmId||'');}
+async function putEggExportRecord(record){
+	 const db=await openEggExportDb();
+	 return new Promise((resolve,reject)=>{
+	  let tx;
+	  try{tx=db.transaction('reports','readwrite');tx.objectStore('reports').put(record);}catch(e){reject(e);return;}
+	  tx.oncomplete=()=>resolve(record);
+	  tx.onerror=()=>reject(tx.error||new Error('Không lưu được phiếu xuất trứng.'));
+	  tx.onabort=()=>reject(tx.error||new Error('Giao dịch lưu phiếu bị hủy.'));
+	 });
+}
+async function getEggExportRecord(id){
+	 const db=await openEggExportDb();
+	 return new Promise((resolve,reject)=>{
+	  let tx,request;
+	  try{tx=db.transaction('reports','readonly');request=tx.objectStore('reports').get(id);}catch(e){reject(e);return;}
+	  request.onsuccess=()=>resolve(request.result||null);
+	  request.onerror=()=>reject(request.error||new Error('Không đọc được phiếu xuất trứng.'));
+	 });
+}
+async function readEggExportReports(farmId){
+	 const db=await openEggExportDb();
+	 return new Promise((resolve,reject)=>{
+	  let tx,request;
+	  try{tx=db.transaction('reports','readonly');request=tx.objectStore('reports').index('byFarm').getAll(farmId);}catch(e){reject(e);return;}
+	  request.onsuccess=()=>resolve((request.result||[]).filter(item=>item.kind==='report').sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||Number(b.savedAt||0)-Number(a.savedAt||0)));
+	  request.onerror=()=>reject(request.error||new Error('Không tải được danh sách phiếu xuất trứng.'));
+	 });
+}
+function setEggExportLocalMarker(farmId,present){
+	 const key=EGG_EXPORT_LOCAL_PREFIX+encodeURIComponent(farmId)+'_hasRecords';
+	 try{if(present)localStorage.setItem(key,'1');else localStorage.removeItem(key);}catch(e){}
+}
+async function refreshEggExportLocalMarker(farmId){
+	 try{
+	  const db=await openEggExportDb();
+	  const records=await new Promise((resolve,reject)=>{
+	   const request=db.transaction('reports','readonly').objectStore('reports').index('byFarm').getAll(farmId);
+	   request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>reject(request.error||new Error('Không đọc được phiếu cục bộ.'));
+	  });
+	  setEggExportLocalMarker(farmId,records.length>0);
+	 }catch(e){console.warn('Không thể cập nhật trạng thái phiếu xuất kho cục bộ:',e);}
+}
+async function deleteEggExportRecord(id){
+	 const db=await openEggExportDb();
+	 return new Promise((resolve,reject)=>{
+	  let tx;
+	  try{tx=db.transaction('reports','readwrite');tx.objectStore('reports').delete(id);}catch(e){reject(e);return;}
+	  tx.oncomplete=resolve;
+	  tx.onerror=()=>reject(tx.error||new Error('Không xóa được phiếu xuất trứng.'));
+	  tx.onabort=()=>reject(tx.error||new Error('Giao dịch xóa phiếu bị hủy.'));
+	 });
+}
+
+function setEggExportStatus(message,color='#146c43'){
+	 const status=$('#eggExportStatus');
+	 if(!status)return;
+	 status.textContent=message;
+	 status.style.color=color;
+}
+function clearEggExportObjectUrls(){
+	 eggExportObjectUrls.forEach(url=>URL.revokeObjectURL(url));
+	 eggExportObjectUrls=[];
+}
+function eggExportMediaType(file){
+	 const supplied=String(file.type||'').toLowerCase();
+	 if(supplied.startsWith('image/')||supplied.startsWith('video/'))return supplied;
+	 const ext=String(file.name||'').split('.').pop().toLowerCase();
+	 const types={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',gif:'image/gif',webp:'image/webp',bmp:'image/bmp',heic:'image/heic',heif:'image/heif',avif:'image/avif',mp4:'video/mp4',m4v:'video/x-m4v',mov:'video/quicktime',webm:'video/webm','3gp':'video/3gpp',avi:'video/x-msvideo',mkv:'video/x-matroska'};
+	 return types[ext]||'';
+}
+function renderEggExportFiles(){
+	 const list=$('#eggExportFileList');
+	 if(!list)return;
+	 clearEggExportObjectUrls();
+	 list.replaceChildren();
+	 if(!eggExportAttachments.length){const empty=document.createElement('div');empty.className='photo-empty';empty.textContent='Chưa có tệp minh chứng.';list.appendChild(empty);return;}
+	 eggExportAttachments.forEach((file,index)=>{
+	  const item=document.createElement('div');item.className='cold-evidence-item egg-export-file-item';
+	  const url=URL.createObjectURL(file.blob);eggExportObjectUrls.push(url);
+	  if(String(file.type||'').startsWith('image/')){const image=document.createElement('img');image.src=url;image.alt=file.name;image.loading='lazy';item.appendChild(image);}
+	  else if(String(file.type||'').startsWith('video/')){const video=document.createElement('video');video.src=url;video.controls=true;video.playsInline=true;video.preload='metadata';item.appendChild(video);}
+	  const name=document.createElement('div');name.className='cold-evidence-name';name.textContent=file.name+' · '+(Number(file.blob?.size||0)/1048576).toFixed(2)+' MB';
+	  const remove=document.createElement('button');remove.type='button';remove.className='cold-evidence-delete';remove.textContent='Gỡ tệp';
+	  remove.addEventListener('click',()=>{eggExportAttachments.splice(index,1);renderEggExportFiles();scheduleEggExportDraftSave();});
+	  item.append(name,remove);list.appendChild(item);
+	 });
+}
+function collectEggExportFormData(){
+	 return {
+	  farmId:selectedFarm?.id||'',farmName:selectedFarm?.name||'',
+	  date:$('#eggExportDate').value,
+	  quantity:Number($('#eggExportQuantity').value||0),
+	  recipient:String($('#eggExportRecipient').value||'').trim(),
+	  note:String($('#eggExportNote').value||'').trim(),
+	  attachments:eggExportAttachments.map(file=>({name:file.name,type:file.type,blob:file.blob})),
+	  signature:eggExportSignatureData||'',savedAt:Date.now()
+	 };
+}
+function setEggExportSignature(data){
+	 const canvas=$('#eggExportSignature');
+	 const ctx=canvas.getContext('2d');
+	 const token=++eggExportSignatureToken;
+	 ctx.clearRect(0,0,canvas.width,canvas.height);
+	 eggExportSignatureData=data||'';
+	 if(!eggExportSignatureData)return;
+	 const image=new Image();
+	 image.onload=()=>{if(token!==eggExportSignatureToken)return;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);};
+	 image.onerror=()=>{if(token===eggExportSignatureToken)eggExportSignatureData='';};
+	 image.src=eggExportSignatureData;
+}
+function resetEggExportForm(){
+	 eggExportLoading=true;
+	 $('#eggExportForm').reset();
+	 $('#eggExportDate').value=today();
+	 eggExportAttachments=[];
+	 currentEggExportId='';
+	 setEggExportSignature('');
+	 renderEggExportFiles();
+	 eggExportDirty=false;
+	 eggExportLoading=false;
+}
+function loadEggExportForm(record,isDraft=false){
+	 eggExportLoading=true;
+	 $('#eggExportForm').reset();
+	 $('#eggExportDate').value=record.date||today();
+	 $('#eggExportQuantity').value=record.quantity??'';
+	 $('#eggExportRecipient').value=record.recipient||'';
+	 $('#eggExportNote').value=record.note||'';
+	 eggExportAttachments=(Array.isArray(record.attachments)?record.attachments:[]).filter(file=>file&&file.blob).map(file=>({name:String(file.name||'Tệp minh chứng'),type:String(file.type||file.blob.type||''),blob:file.blob}));
+	 currentEggExportId=isDraft?String(record.editingId||''):String(record.id||'');
+	 setEggExportSignature(record.signature||'');
+	 renderEggExportFiles();
+	 eggExportDirty=!!isDraft;
+	 eggExportLoading=false;
+}
+function scheduleEggExportDraftSave(){
+	 if(eggExportLoading||!selectedFarm)return;
+	 eggExportDirty=true;
+	 setEggExportStatus('Đang lưu nháp xuất kho trên thiết bị…','#b25f00');
+	 clearTimeout(eggExportDraftTimer);
+	 eggExportDraftTimer=setTimeout(()=>saveEggExportDraft(),550);
+}
+async function saveEggExportDraft(){
+	 if(!selectedFarm||eggExportLoading||!eggExportDirty)return true;
+	 const farmId=selectedFarm.id;
+	 const data=collectEggExportFormData();
+	 const draft={...data,id:eggExportDraftId(farmId),kind:'draft',editingId:currentEggExportId,savedAt:Date.now()};
+	 const task=eggExportDraftQueue.then(()=>putEggExportRecord(draft));
+	 eggExportDraftQueue=task.catch(()=>{});
+	 try{await task;setEggExportLocalMarker(farmId,true);setEggExportStatus('✓ Nháp xuất kho đã tự lưu trên thiết bị này; chưa đồng bộ lên máy chủ.','#146c43');return true;}
+	 catch(e){setEggExportStatus('Không lưu được nháp xuất kho: '+(e.message||e),'#dc3545');return false;}
+}
+async function loadEggExportWorkspace(farm){
+	 try{
+	  eggExportRecords=await readEggExportReports(farm.id);
+	  renderEggExportReports();
+	  const draft=await getEggExportRecord(eggExportDraftId(farm.id));
+	  await refreshEggExportLocalMarker(farm.id);
+	  if(draft&&draft.kind==='draft'){
+	   loadEggExportForm(draft,true);
+	   setEggExportStatus('Đã khôi phục nháp xuất kho của '+farm.name+' trên thiết bị này.','#146c43');
+	  }else{
+	   resetEggExportForm();
+	   setEggExportStatus('Tạo phiếu mới. Phiếu và tệp sẽ lưu trên thiết bị này, không gửi lên máy chủ.','#146c43');
+	  }
+	 }catch(e){setEggExportStatus('Không mở được kho phiếu cục bộ: '+(e.message||e),'#dc3545');throw e;}
+}
+function renderEggExportReports(){
+	 const list=$('#eggExportReportsList');
+	 if(!list)return;
+	 list.replaceChildren();
+	 if(!eggExportRecords.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Chưa có phiếu xuất kho nào lưu trên thiết bị này.';list.appendChild(empty);return;}
+	 eggExportRecords.forEach(record=>{
+	  const row=document.createElement('div');row.className='egg-export-record';
+	  const meta=document.createElement('div');meta.className='egg-export-record-meta';
+	  const title=document.createElement('strong');title.textContent=(String(record.date||'').split('-').reverse().join('/')||'Chưa có ngày')+' · '+(record.recipient||'Chưa ghi người nhận');
+	  const detail=document.createElement('small');detail.textContent=Number(record.quantity||0).toLocaleString('vi-VN')+' quả · '+(Array.isArray(record.attachments)?record.attachments.length:0)+' tệp'+(record.signature?' · có chữ ký':'');
+	  meta.append(title,detail);
+	  const actions=document.createElement('div');actions.className='egg-export-record-actions';
+	 const open=document.createElement('button');open.type='button';open.textContent='Mở';
+	 open.addEventListener('click',async()=>{
+	   if(eggExportSaving)return;
+	   if(eggExportDirty){clearTimeout(eggExportDraftTimer);await saveEggExportDraft();if(!confirm('Mở phiếu đã lưu và bỏ phần đang sửa trên màn hình? Bản nháp hiện tại sẽ bị bỏ.'))return;await deleteEggExportRecord(eggExportDraftId(selectedFarm.id));await refreshEggExportLocalMarker(selectedFarm.id);}
+	   loadEggExportForm(record,false);setEggExportStatus('Đang mở phiếu đã lưu cục bộ.');window.scrollTo({top:0,behavior:'smooth'});
+	  });
+	  const print=document.createElement('button');print.type='button';print.textContent='In';print.addEventListener('click',()=>printEggExportReport(record));
+	  const del=document.createElement('button');del.type='button';del.textContent='Xóa';
+	  del.addEventListener('click',async()=>{
+	   if(eggExportSaving)return;
+	   if(!confirm('Xóa phiếu xuất trứng ngày '+(String(record.date||'').split('-').reverse().join('/'))+' khỏi thiết bị này?'))return;
+	   try{await deleteEggExportRecord(record.id);eggExportRecords=eggExportRecords.filter(item=>item.id!==record.id);await refreshEggExportLocalMarker(selectedFarm.id);renderEggExportReports();if(currentEggExportId===record.id){resetEggExportForm();setEggExportStatus('Đã xóa phiếu. Có thể tạo phiếu mới.');}}
+	   catch(e){alert('Không xóa được phiếu: '+(e.message||e));}
+	  });
+	  actions.append(open,print,del);row.append(meta,actions);list.appendChild(row);
+	 });
+}
+async function saveEggExportReport(event){
+	 if(event)event.preventDefault();
+	 if(eggExportSaving)return;
+	 if(!selectedFarm){alert('Hãy chọn trại trước khi lưu phiếu.');return;}
+	 if(!$('#eggExportForm').reportValidity())return;
+	 const data=collectEggExportFormData();
+	 if(!Number.isSafeInteger(data.quantity)||data.quantity<1){alert('Số lượng trứng phải là số nguyên lớn hơn 0.');$('#eggExportQuantity').focus();return;}
+	 const button=$('#saveEggExportBtn');const oldText=button.textContent;
+	 const controls=[...$('#eggExportForm').querySelectorAll('input,textarea,button')].map(control=>[control,control.disabled]);
+	 const signatureCanvas=$('#eggExportSignature');const signaturePointerEvents=signatureCanvas.style.pointerEvents;
+	 clearTimeout(eggExportDraftTimer);
+	 eggExportSaving=true;controls.forEach(([control])=>{control.disabled=true;});
+	 signatureCanvas.style.pointerEvents='none';
+	 button.disabled=true;button.textContent='Đang lưu trên thiết bị…';
+	 try{
+	  await eggExportDraftQueue;
+	  const record={...data,id:currentEggExportId||('export-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)),kind:'report',savedAt:Date.now()};
+	  await putEggExportRecord(record);
+	  await deleteEggExportRecord(eggExportDraftId(selectedFarm.id));
+	  currentEggExportId=record.id;eggExportDirty=false;
+	  eggExportRecords=await readEggExportReports(selectedFarm.id);renderEggExportReports();
+	  setEggExportLocalMarker(selectedFarm.id,true);
+	  setEggExportStatus('✓ Phiếu xuất kho đã lưu trên thiết bị này. Tệp và chữ ký chưa đồng bộ lên máy chủ.','#146c43');
+	 }catch(e){setEggExportStatus('Không lưu được phiếu xuất kho: '+(e.message||e),'#dc3545');}
+	 finally{controls.forEach(([control,disabled])=>{control.disabled=disabled;});signatureCanvas.style.pointerEvents=signaturePointerEvents;eggExportSaving=false;button.disabled=false;button.textContent=oldText;}
+}
+async function confirmEggExportExit(){
+	 if(eggExportSaving){alert('Đang lưu phiếu xuất kho. Vui lòng đợi lưu xong rồi hãy rời màn hình.');return false;}
+	 clearTimeout(eggExportDraftTimer);
+	 if(!eggExportDirty)return true;
+	 const saved=await saveEggExportDraft();
+	 if(!saved){alert('Không lưu được nháp xuất kho. Hãy thử lại trước khi rời màn hình.');return false;}
+	 return confirm('Phiếu đang sửa đã lưu thành nháp trên thiết bị này. Bạn muốn tiếp tục rời màn hình?');
+}
+async function switchEggExportFarm(){
+	 if(!await confirmEggExportExit())return;
+	 selectedFarm=null;
+	 await showFarmChooser(localStorage.getItem(FARM_KEY)||'');
+}
+async function switchEggExportMode(){
+	 if(!await confirmEggExportExit())return;
+	 selectedFarm=null;
+	 showModeSelection();
+}
+async function newEggExportReport(){
+	 if(eggExportSaving)return;
+	 if(eggExportDirty&&!confirm('Bỏ phần đang sửa và xóa nháp xuất kho hiện tại trên thiết bị này?'))return;
+	 clearTimeout(eggExportDraftTimer);
+	 try{await eggExportDraftQueue;if(selectedFarm){await deleteEggExportRecord(eggExportDraftId(selectedFarm.id));await refreshEggExportLocalMarker(selectedFarm.id);}}catch(e){console.warn('Không xóa được nháp xuất kho:',e);}
+	 resetEggExportForm();
+	 setEggExportStatus('Tạo phiếu mới. Nhập thông tin xuất trứng để bắt đầu.','#146c43');
+}
+async function addEggExportFiles(input){
+	 const files=Array.from(input.files||[]);
+	 if(!files.length)return;
+	 const failed=[];
+	 for(const file of files){
+	  const type=eggExportMediaType(file);
+	  if(!type){failed.push(file.name+' (không nhận diện được định dạng ảnh/video)');continue;}
+	  if(file.size>100*1024*1024){failed.push(file.name+' (vượt giới hạn 100 MB)');continue;}
+	  eggExportAttachments.push({name:String(file.name||'Tệp minh chứng'),type,blob:file.slice(0,file.size,type)});
+	 }
+	 input.value='';renderEggExportFiles();
+	 if(failed.length)setEggExportStatus('Một số tệp không được thêm: '+failed.join('; '),'#b25f00');
+	 if(eggExportAttachments.length)scheduleEggExportDraftSave();
+}
+function buildEggExportPrintable(report){
+	 const root=$('#eggExportPrintable');
+	 root.replaceChildren();
+	 const title=document.createElement('h1');title.textContent='PHIẾU XUẤT KHO TRỨNG';root.appendChild(title);
+	 const table=document.createElement('table');
+	 const addRow=(label,value)=>{const tr=document.createElement('tr');const th=document.createElement('th');th.textContent=label;const td=document.createElement('td');td.textContent=String(value||'—');tr.append(th,td);table.appendChild(tr);};
+	 addRow('Trại',report.farmName||selectedFarm?.name||'');
+	 addRow('Ngày xuất',String(report.date||'').split('-').reverse().join('/'));
+	 addRow('Người nhận trứng',report.recipient);
+	 addRow('Số lượng',Number(report.quantity||0).toLocaleString('vi-VN')+' quả');
+	 addRow('Ghi chú',report.note);
+	 root.appendChild(table);
+	 const mediaTitle=document.createElement('h3');mediaTitle.textContent='Minh chứng';root.appendChild(mediaTitle);
+	 const media=document.createElement('div');media.className='egg-export-print-media';
+	 (Array.isArray(report.attachments)?report.attachments:[]).forEach(file=>{
+	  if(String(file.type||'').startsWith('image/')){const image=document.createElement('img');image.src=URL.createObjectURL(file.blob);image.alt=file.name;eggExportPrintUrls.push(image.src);media.appendChild(image);}
+	  else{const name=document.createElement('div');name.textContent='Video minh chứng lưu trên thiết bị: '+file.name;media.appendChild(name);}
+	 });
+	 if(!media.childNodes.length){const none=document.createElement('p');none.textContent='Không có tệp minh chứng.';media.appendChild(none);}
+	 root.appendChild(media);
+	 const signatureTitle=document.createElement('h3');signatureTitle.textContent='Chữ ký người nhận';signatureTitle.style.marginTop='22px';root.appendChild(signatureTitle);
+	 if(report.signature){const signature=document.createElement('img');signature.className='egg-export-print-signature';signature.src=report.signature;signature.alt='Chữ ký người nhận';root.appendChild(signature);}
+	 else{const blank=document.createElement('div');blank.style.cssText='width:260px;height:72px;border-bottom:1px solid #333';root.appendChild(blank);}
+}
+async function printEggExportReport(report=collectEggExportFormData()){
+	 if(!report.date||!report.recipient||!Number.isSafeInteger(Number(report.quantity))||Number(report.quantity)<1){alert('Nhập ngày xuất, số lượng nguyên dương và tên người nhận trước khi in.');return;}
+	 buildEggExportPrintable(report);
+	 await Promise.all([...$('#eggExportPrintable').querySelectorAll('img')].map(image=>image.complete?Promise.resolve():new Promise(resolve=>{image.onload=resolve;image.onerror=resolve;})));
+	 eggExportPrintOldTitle=document.title;
+	 document.title='Phieu-xuat-kho-trung-'+String(report.date||'');
+	 document.body.classList.add('egg-export-printing');
+	 window.print();
+}
+function finishEggExportPrint(){
+	 document.body.classList.remove('egg-export-printing');
+	 if(eggExportPrintOldTitle)document.title=eggExportPrintOldTitle;
+	 eggExportPrintOldTitle='';
+	 eggExportPrintUrls.forEach(url=>URL.revokeObjectURL(url));eggExportPrintUrls=[];
+}
+function initEggExportSignature(){
+	 const canvas=$('#eggExportSignature');const ctx=canvas.getContext('2d');
+	 ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=8;ctx.strokeStyle='#20312a';
+	 const point=e=>{const rect=canvas.getBoundingClientRect();return{x:(e.clientX-rect.left)*canvas.width/rect.width,y:(e.clientY-rect.top)*canvas.height/rect.height};};
+	 canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);eggExportSignatureDrawing=true;ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle='#20312a';ctx.fill();ctx.beginPath();ctx.moveTo(p.x,p.y);});
+	 canvas.addEventListener('pointermove',e=>{if(!eggExportSignatureDrawing)return;e.preventDefault();const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();});
+	 const end=()=>{if(!eggExportSignatureDrawing)return;eggExportSignatureDrawing=false;eggExportSignatureData=canvas.toDataURL('image/png');scheduleEggExportDraftSave();};
+	 canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+}
+
+$('#eggExportForm').addEventListener('submit',saveEggExportReport);
+$('#eggExportForm').addEventListener('input',()=>scheduleEggExportDraftSave());
+$('#eggExportForm').addEventListener('change',e=>{if(e.target.id!=='eggExportFiles')scheduleEggExportDraftSave();});
+$('#eggExportFiles').addEventListener('change',function(){addEggExportFiles(this);});
+$('#clearEggExportSignatureBtn').addEventListener('click',()=>{
+	 setEggExportSignature('');scheduleEggExportDraftSave();
+});
+$('#printEggExportBtn').addEventListener('click',()=>printEggExportReport());
+$('#newEggExportBtn').addEventListener('click',newEggExportReport);
+$('#eggExportChangeFarmBtn').addEventListener('click',switchEggExportFarm);
+$('#eggExportChangeModeBtn').addEventListener('click',switchEggExportMode);
+window.addEventListener('afterprint',finishEggExportPrint);
+initEggExportSignature();
 
 function renderPhotos(){
 	 const list=$('#photoList');
