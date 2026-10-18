@@ -167,6 +167,11 @@ textarea{min-height:76px;resize:vertical}
 .photo-view-btn{background:#e9f2ec;color:#146c43}
 .photo-delete-btn{background:#fff0f0;color:#dc3545}
 .photo-empty{font-size:12px;color:#718078;padding:8px 0}
+.cold-evidence-list{display:grid;gap:10px;margin-top:10px;width:100%}
+.cold-evidence-item{min-width:0;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fbfdfb;overflow:hidden}
+.cold-evidence-item img,.cold-evidence-item video{display:block;width:100%;max-height:240px;object-fit:contain;background:#eef2ef;border-radius:8px}
+.cold-evidence-name{margin:7px 0 0;font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.cold-evidence-delete{margin-top:7px;border:0;border-radius:8px;padding:7px 10px;background:#fff0f0;color:#dc3545;font-size:11px;font-weight:750}
 .photo-viewer{
  position:fixed;
  inset:0;
@@ -552,7 +557,7 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
   <label>Trứng xuất kho lạnh (quả)</label>
   <input name="coldStoreOut" type="number" min="0" value="0">
  </div>
- <div class="field full">
+<div class="field full">
   <label>Tổng tồn kho lạnh (quả)</label>
   <input name="coldStoreEnd" type="number" min="0" value="0" readonly>
  </div>
@@ -560,8 +565,20 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 <p class="note">
  Tồn kho lạnh = tổng trứng bàn giao kho từ các ngày trước và hôm nay − tổng trứng đã xuất kho lạnh.
 </p>
-   <div class="divider"></div>
-   <div class="grid">
+<div class="divider"></div>
+<p class="subhead">Thông tin xuất kho lạnh</p>
+<div class="grid">
+ <div class="field"><label for="coldStoreOutDate">Ngày xuất</label><input id="coldStoreOutDate" name="coldStoreOutDate" type="date"></div>
+ <div class="field"><label for="coldStoreRecipient">Xuất cho ai</label><input id="coldStoreRecipient" name="coldStoreRecipient" type="text" maxlength="160" placeholder="Tên người nhận / đơn vị"></div>
+ <div class="field full">
+  <label for="coldStoreEvidence">Ảnh / video minh chứng xuất kho</label>
+  <input id="coldStoreEvidence" type="file" accept="image/*,video/*" multiple>
+  <div id="coldStoreEvidenceList" class="cold-evidence-list" aria-live="polite"></div>
+  <p class="note">Ảnh/video lưu riêng trên thiết bị này, không gửi lên máy chủ và không đồng bộ sang thiết bị khác. Tối đa 100 MB mỗi tệp.</p>
+ </div>
+</div>
+	   <div class="divider"></div>
+	   <div class="grid">
     <div class="field"><label>Tỷ lệ đẻ (%)</label><input id="rRateInput" readonly value="0%"></div>
     <div class="field"><label>Tỷ lệ trứng đạt (%)</label><input id="rQualityInput" readonly value="0%"></div>
 
@@ -742,6 +759,7 @@ const COLD_STORE_DRAFT_PREFIX='chickenFarmColdStoreDraft_';
 const FARM_KEY='chickenFarmSelectedId';
 const DEFAULT_FARM_ID='farm_default_9600';
 const PHOTO_DB_NAME='chickenFarmPhotoDrafts';
+const COLD_STORE_MEDIA_DB='chickenFarmColdStoreMedia';
 let sessionPassword='';
 try{localStorage.removeItem(LEGACY_PASSWORD_KEY);}catch(e){}
 const form=document.getElementById('reportForm');
@@ -763,6 +781,9 @@ let photoMutationVersion=0;
 let photoRestoreToken=0;
 let photoDbPromise=null;
 let photoWriteQueue=Promise.resolve();
+let coldStoreMediaDbPromise=null;
+let coldStoreMediaRestoreToken=0;
+let coldStoreMediaUrls=[];
 let reports=[];
 let farms=[];
 let selectedFarm=null;
@@ -1562,6 +1583,8 @@ return data;
 
 function setData(data){
  data=parseReportData(data)||{};
+	 if(!('coldStoreOutDate' in data)) data.coldStoreOutDate='';
+	 if(!('coldStoreRecipient' in data)) data.coldStoreRecipient='';
  fields.forEach(el=>{
   if(!(el.name in data)) return;
   if(el.type==='checkbox') el.checked=!!data[el.name];
@@ -1796,10 +1819,11 @@ function getEggStockBeforeDate(date){
 }
 
 function restoreDraft(date,resetWhenMissing){
- if(!date) return false;
- photoRestoreToken++;
+	if(!date) return false;
+	photoRestoreToken++;
+	restoreColdStoreEvidence(date);
 
- clearTimeout(draftTimer);
+	clearTimeout(draftTimer);
  restoringDraft=true;
 
  try{
@@ -2206,6 +2230,13 @@ async function exportPDF() {
       'button,.no-print,.actions,#history,.photo-viewer,.photo-buttons,input[type="file"]'
     ).forEach(el => el.remove());
 
+    clone.querySelectorAll('.cold-evidence-item video').forEach(video => {
+      const note = document.createElement('div');
+      note.className = 'cold-evidence-name';
+      note.textContent = 'Video minh chứng lưu trên thiết bị: ' + (video.dataset.fileName || 'tệp video');
+      video.replaceWith(note);
+    });
+
     const width = Math.ceil(Math.max(
       source.getBoundingClientRect().width,
       source.scrollWidth,
@@ -2477,6 +2508,147 @@ fields.forEach(el=>{
 
 $('#saveBtn').addEventListener('click',save);
 $('#pdfBtn').addEventListener('click',exportPDF);
+
+function openColdStoreMediaDb(){
+ if(!('indexedDB' in window)) return Promise.reject(new Error('Trình duyệt không hỗ trợ lưu tệp IndexedDB.'));
+ if(coldStoreMediaDbPromise) return coldStoreMediaDbPromise;
+ coldStoreMediaDbPromise=new Promise((resolve,reject)=>{
+  let request;
+  try{request=indexedDB.open(COLD_STORE_MEDIA_DB,1);}catch(e){coldStoreMediaDbPromise=null;reject(e);return;}
+  request.onupgradeneeded=()=>{
+   const db=request.result;
+   if(!db.objectStoreNames.contains('evidence')){
+    const store=db.createObjectStore('evidence',{keyPath:'key'});
+    store.createIndex('byFarmDate',['farmId','date'],{unique:false});
+   }
+  };
+  request.onsuccess=()=>{
+   const db=request.result;
+   db.onversionchange=()=>{db.close();coldStoreMediaDbPromise=null;};
+   resolve(db);
+  };
+  request.onerror=()=>{coldStoreMediaDbPromise=null;reject(request.error||new Error('Không mở được kho media.'));};
+  request.onblocked=()=>{coldStoreMediaDbPromise=null;reject(new Error('Kho media đang bị khóa bởi tab khác.'));};
+ });
+ return coldStoreMediaDbPromise;
+}
+
+function coldStoreMediaType(file){
+ const supplied=String(file.type||'').toLowerCase();
+ if(supplied.startsWith('image/')||supplied.startsWith('video/')) return supplied;
+ const ext=String(file.name||'').split('.').pop().toLowerCase();
+	 const types={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',gif:'image/gif',webp:'image/webp',bmp:'image/bmp',heic:'image/heic',heif:'image/heif',avif:'image/avif',mp4:'video/mp4',m4v:'video/x-m4v',mov:'video/quicktime',webm:'video/webm','3gp':'video/3gpp',avi:'video/x-msvideo',mkv:'video/x-matroska'};
+ return types[ext]||'';
+}
+
+async function saveColdStoreEvidenceFile(date,farmId,file,type){
+ const db=await openColdStoreMediaDb();
+ const id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+ const record={key:farmId+'::'+date+'::'+id,farmId,date,id,name:String(file.name||'Tệp minh chứng'),type,blob:file.slice(0,file.size,type),savedAt:Date.now()};
+ await new Promise((resolve,reject)=>{
+  let tx;
+  try{tx=db.transaction('evidence','readwrite');tx.objectStore('evidence').put(record);}catch(e){reject(e);return;}
+  tx.oncomplete=resolve;
+  tx.onerror=()=>reject(tx.error||new Error('Không lưu được tệp minh chứng.'));
+  tx.onabort=()=>reject(tx.error||new Error('Giao dịch lưu tệp bị hủy.'));
+ });
+ return record;
+}
+
+async function readColdStoreEvidence(date,farmId){
+ const db=await openColdStoreMediaDb();
+ return new Promise((resolve,reject)=>{
+  let tx,request;
+  try{tx=db.transaction('evidence','readonly');request=tx.objectStore('evidence').index('byFarmDate').getAll(IDBKeyRange.only([farmId,date]));}
+  catch(e){reject(e);return;}
+  request.onsuccess=()=>resolve((request.result||[]).sort((a,b)=>Number(a.savedAt||0)-Number(b.savedAt||0)));
+  request.onerror=()=>reject(request.error||new Error('Không đọc được tệp minh chứng.'));
+  tx.onerror=()=>reject(tx.error||new Error('Lỗi đọc kho media.'));
+ });
+}
+
+async function deleteColdStoreEvidence(key){
+ const db=await openColdStoreMediaDb();
+ await new Promise((resolve,reject)=>{
+  let tx;
+  try{tx=db.transaction('evidence','readwrite');tx.objectStore('evidence').delete(key);}catch(e){reject(e);return;}
+  tx.oncomplete=resolve;
+  tx.onerror=()=>reject(tx.error||new Error('Không xóa được tệp minh chứng.'));
+  tx.onabort=()=>reject(tx.error||new Error('Giao dịch xóa tệp bị hủy.'));
+ });
+}
+
+function renderColdStoreEvidence(items,message='Chưa có tệp minh chứng.'){
+ const list=$('#coldStoreEvidenceList');
+ if(!list) return;
+ coldStoreMediaUrls.forEach(url=>URL.revokeObjectURL(url));
+ coldStoreMediaUrls=[];
+ list.replaceChildren();
+ if(!items.length){
+  const empty=document.createElement('div');empty.className='photo-empty';empty.textContent=message;list.appendChild(empty);return;
+ }
+ items.forEach(record=>{
+  const item=document.createElement('div');item.className='cold-evidence-item';
+  const url=URL.createObjectURL(record.blob);coldStoreMediaUrls.push(url);
+  if(String(record.type||'').startsWith('video/')){
+   const video=document.createElement('video');video.controls=true;video.playsInline=true;video.preload='metadata';video.src=url;video.dataset.fileName=record.name;item.appendChild(video);
+  }else if(String(record.type||'').startsWith('image/')){
+   const image=document.createElement('img');image.src=url;image.alt=record.name;image.loading='lazy';item.appendChild(image);
+  }
+  const name=document.createElement('div');name.className='cold-evidence-name';name.textContent=record.name+' · '+(Number(record.blob?.size||0)/1048576).toFixed(2)+' MB';
+  const del=document.createElement('button');del.type='button';del.className='cold-evidence-delete';del.textContent='Xóa tệp';
+  del.addEventListener('click',async()=>{
+   if(!confirm('Xóa tệp minh chứng “'+record.name+'” khỏi thiết bị này?')) return;
+   try{await deleteColdStoreEvidence(record.key);restoreColdStoreEvidence($('#date').value);}
+   catch(e){alert('Không xóa được tệp: '+(e.message||e));}
+  });
+  item.append(name,del);list.appendChild(item);
+ });
+}
+
+async function restoreColdStoreEvidence(date){
+ const token=++coldStoreMediaRestoreToken;
+ const farmId=selectedFarm?.id||'';
+ const reportDate=String(date||'').slice(0,10);
+ renderColdStoreEvidence([],farmId&&/^\d{4}-\d{2}-\d{2}$/.test(reportDate)?'Đang tải minh chứng…':'Chưa có tệp minh chứng.');
+ if(!farmId||!/^\d{4}-\d{2}-\d{2}$/.test(reportDate)) return;
+ try{
+  const items=await readColdStoreEvidence(reportDate,farmId);
+  if(token!==coldStoreMediaRestoreToken||selectedFarm?.id!==farmId) return;
+  renderColdStoreEvidence(items);
+ }catch(e){
+  if(token===coldStoreMediaRestoreToken&&selectedFarm?.id===farmId) renderColdStoreEvidence([],'Không tải được minh chứng đã lưu.');
+  console.warn('Không khôi phục được ảnh/video kho lạnh:',e);
+ }
+}
+
+$('#coldStoreEvidence').addEventListener('change',async function(){
+ const input=this;
+ const files=Array.from(input.files||[]);
+ if(!files.length) return;
+ const date=String($('#date').value||'').slice(0,10);
+ const farmId=selectedFarm?.id||'';
+ if(!farmId||!/^\d{4}-\d{2}-\d{2}$/.test(date)){
+  alert('Hãy chọn trại và ngày báo cáo trước khi thêm minh chứng.');input.value='';return;
+ }
+ input.disabled=true;
+ let added=0;
+ const failed=[];
+ try{
+  for(const file of files){
+   const type=coldStoreMediaType(file);
+   if(!type){failed.push(file.name+' (không nhận diện được định dạng ảnh/video)');continue;}
+   if(file.size>100*1024*1024){failed.push(file.name+' (vượt giới hạn 100 MB)');continue;}
+   try{await saveColdStoreEvidenceFile(date,farmId,file,type);added++;}
+   catch(e){failed.push(file.name+' ('+(e.message||'không lưu được')+')');}
+  }
+ }finally{
+  input.disabled=false;input.value='';
+ }
+ await restoreColdStoreEvidence($('#date').value);
+ if(added) statusDraft('Đã lưu '+added+' tệp minh chứng riêng trên thiết bị này; chưa gửi lên máy chủ.','#146c43');
+ if(failed.length) alert('Một số tệp chưa lưu được:\n'+failed.join('\n'));
+});
 
 function renderPhotos(){
  const list=$('#photoList');
