@@ -389,8 +389,8 @@ html,body{width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;backg
 body.work-menu-open{overflow:hidden}
 @media(max-width:420px){.farm-content{padding:20px 14px 28px}.farm-choice{min-height:72px;padding:10px 11px}.farm-manage-item{grid-template-columns:minmax(0,1fr)}.farm-manage-actions button{padding:8px 10px}}
 .pdf-farm-label{margin:5px 2px 10px;padding:8px 10px;border:1px solid #dce5df;border-radius:10px;background:#eff8f2;color:#146c43;font-size:12px;font-weight:750;overflow-wrap:anywhere}
-#date,#coldStoreOutDate{width:100%!important;min-width:0!important;max-width:100%!important;min-height:46px!important;padding:8px clamp(4px,2vw,10px)!important;border:1.5px solid #9ab6a4!important;border-radius:11px!important;background:linear-gradient(145deg,#fff,#edf6ef)!important;color:#123b2a!important;font-size:clamp(12px,3.8vw,16px)!important;font-weight:850!important;font-variant-numeric:tabular-nums;letter-spacing:.15px;white-space:nowrap;box-shadow:inset 0 1px 0 #fff}
-#date:focus,#coldStoreOutDate:focus{border-color:#b18b40!important;box-shadow:0 0 0 3px #b18b4028!important}
+#date{width:100%!important;min-width:0!important;max-width:100%!important;min-height:42px!important;padding:6px clamp(4px,1.8vw,8px)!important;border:1.5px solid #9ab6a4!important;border-radius:10px!important;background:linear-gradient(145deg,#fff,#edf6ef)!important;color:#123b2a!important;font-size:clamp(11px,3.4vw,14px)!important;font-weight:800!important;font-variant-numeric:tabular-nums;letter-spacing:.15px;white-space:nowrap;box-shadow:inset 0 1px 0 #fff}
+#date:focus{border-color:#b18b40!important;box-shadow:0 0 0 3px #b18b4028!important}
 
 
 @media(max-width:767px){
@@ -639,12 +639,15 @@ body.work-menu-open{overflow:hidden}
 <div class="divider"></div>
 <p class="subhead">Thông tin người lấy trứng và xuất kho</p>
 <div class="grid">
- <div class="field"><label for="coldStoreOutDate">Ngày xuất</label><input id="coldStoreOutDate" name="coldStoreOutDate" type="date"></div>
  <div class="field full">
   <p class="subhead">Chi tiết từng đơn vị / người lấy trứng</p>
   <div id="coldStoreRecipients" class="cold-recipient-list" aria-live="polite"></div>
   <button id="addColdStoreRecipientBtn" class="cold-recipient-add" type="button">＋ Thêm người lấy trứng</button>
   <p class="note">Ảnh/video minh chứng xuất kho được lưu riêng trên thiết bị này theo từng người lấy trứng, không tải lên máy chủ và không đồng bộ sang thiết bị khác. Tối đa 100 MB mỗi tệp.</p>
+ </div>
+ <div class="field full">
+  <label for="coldStoreExportNote">Ghi chú xuất trứng</label>
+  <textarea id="coldStoreExportNote" name="coldStoreExportNote" rows="3" maxlength="2000" placeholder="Ghi thêm thông tin về lần xuất trứng nếu cần..."></textarea>
  </div>
 </div>
 </div>
@@ -1773,7 +1776,6 @@ return data;
 
 function setData(data){
  data=parseReportData(data)||{};
-	 if(!('coldStoreOutDate' in data)) data.coldStoreOutDate='';
 	 const legacyRecipient=String(data.coldStoreRecipient||'');
 	 const storedRecipients=Array.isArray(data.coldStoreRecipients)&&data.coldStoreRecipients.length
 	  ?data.coldStoreRecipients
@@ -2388,6 +2390,36 @@ await api('/api/reports',{
 }
 
 
+function openPdfShareDialog(file,filename,blob){
+ const objectUrl=URL.createObjectURL(blob);
+ const overlay=document.createElement('div');
+ overlay.setAttribute('role','dialog');
+ overlay.setAttribute('aria-modal','true');
+ overlay.setAttribute('aria-label','Chia sẻ file PDF');
+ overlay.style.cssText='position:fixed;inset:0;z-index:100300;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);';
+ const panel=document.createElement('div');
+ panel.style.cssText='width:100%;max-width:420px;box-sizing:border-box;padding:20px;border-radius:18px;background:#fff;color:#20352a;box-shadow:0 18px 60px rgba(0,0,0,.28);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;';
+ const heading=document.createElement('h2');heading.textContent='PDF đã tạo xong';heading.style.cssText='margin:0 0 8px;font-size:20px;color:#173d2b;';
+ const description=document.createElement('p');description.style.cssText='margin:0 0 16px;font-size:14px;line-height:1.5;color:#52645a;';
+ const canAttemptShare=typeof navigator.share==='function'&&(typeof navigator.canShare!=='function'||(()=>{try{return navigator.canShare({files:[file]});}catch(_){return false;}})());
+ description.textContent=canAttemptShare?'Chạm “Chia sẻ PDF” để mở bảng chia sẻ của iPhone.':'Trình duyệt chưa hỗ trợ chia sẻ PDF trực tiếp. Mở/tải file rồi dùng chức năng Chia sẻ của ứng dụng Tệp.';
+ const actions=document.createElement('div');actions.style.cssText='display:grid;gap:10px;';
+ const shareButton=document.createElement('button');shareButton.type='button';shareButton.textContent='Chia sẻ PDF';shareButton.style.cssText='width:100%;min-height:48px;border:0;border-radius:11px;background:#174832;color:#fff;font-size:15px;font-weight:800;';shareButton.disabled=!canAttemptShare;
+ const downloadLink=document.createElement('a');downloadLink.href=objectUrl;downloadLink.download=filename;downloadLink.target='_blank';downloadLink.rel='noopener';downloadLink.textContent='Mở / tải PDF';downloadLink.style.cssText='display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-height:48px;border:1px solid #cbd8cf;border-radius:11px;background:#eff8f2;color:#174832;text-decoration:none;font-size:15px;font-weight:800;';
+ const closeButton=document.createElement('button');closeButton.type='button';closeButton.textContent='Đóng';closeButton.style.cssText='width:100%;min-height:44px;border:1px solid #d8ded9;border-radius:11px;background:#fff;color:#52645a;font-size:14px;font-weight:700;';
+ const cleanup=()=>{overlay.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),60000);};
+ shareButton.addEventListener('click',async()=>{
+  if(!canAttemptShare)return;
+  try{await navigator.share({files:[file],title:filename});cleanup();}
+  catch(e){if(e.name==='AbortError')return;console.warn('Chia sẻ PDF thất bại:',e);description.textContent='Không mở được bảng chia sẻ. Hãy chọn “Mở / tải PDF”, sau đó dùng Chia sẻ trong ứng dụng Tệp.';}
+ });
+ closeButton.addEventListener('click',cleanup);
+ overlay.addEventListener('click',e=>{if(e.target===overlay)cleanup();});
+ actions.append(shareButton,downloadLink,closeButton);
+ panel.append(heading,description,actions);overlay.appendChild(panel);document.body.appendChild(overlay);
+ shareButton.focus();
+}
+
 async function exportPDF() {
   if (busy) return;
 
@@ -2402,7 +2434,6 @@ async function exportPDF() {
   const oldText = btn.textContent;
   let stage = null;
   let canvas = null;
-  let objectUrl = null;
 
   try {
     busy = true;
@@ -2434,9 +2465,7 @@ async function exportPDF() {
       } else {
         cp.value = el.value;
         cp.setAttribute('value', el.value);
-        if (el.tagName === 'TEXTAREA') {
-          cp.textContent = el.value;
-        }
+        if (el.tagName === 'TEXTAREA') cp.textContent = el.value;
       }
     });
 
@@ -2502,176 +2531,82 @@ async function exportPDF() {
     document.body.appendChild(stage);
 
     await new Promise(resolve =>
-      requestAnimationFrame(() =>
-        requestAnimationFrame(resolve)
-      )
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
     );
 
-    // Chờ ảnh tải xong.
     for (const img of clone.querySelectorAll('img')) {
       img.removeAttribute('loading');
-
       if (!img.complete) {
         await new Promise(resolve => {
           let done = false;
           let timer;
-
           const finish = () => {
             if (done) return;
             done = true;
             clearTimeout(timer);
             resolve();
           };
-
           timer = setTimeout(finish, 10000);
           img.addEventListener('load', finish, { once: true });
           img.addEventListener('error', finish, { once: true });
         });
       }
-
       if (typeof img.decode === 'function') {
-        try {
-          await img.decode();
-        } catch (_) {}
+        try { await img.decode(); } catch (_) {}
       }
     }
 
     await new Promise(resolve =>
-      requestAnimationFrame(() =>
-        requestAnimationFrame(resolve)
-      )
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
     );
 
     const rect = clone.getBoundingClientRect();
-    const pxWidth = Math.ceil(Math.max(
-      clone.scrollWidth,
-      clone.offsetWidth,
-      rect.width,
-      width
-    ));
-    const pxHeight = Math.ceil(Math.max(
-      clone.scrollHeight,
-      clone.offsetHeight,
-      rect.height
-    ));
+    const pxWidth = Math.ceil(Math.max(clone.scrollWidth, clone.offsetWidth, rect.width, width));
+    const pxHeight = Math.ceil(Math.max(clone.scrollHeight, clone.offsetHeight, rect.height));
+    if (pxWidth <= 0 || pxHeight <= 0) throw new Error('Không đo được kích thước báo cáo.');
 
-    if (pxWidth <= 0 || pxHeight <= 0) {
-      throw new Error('Không đo được kích thước báo cáo.');
-    }
-
-    // Một trang PDF dài, theo đúng tỉ lệ nội dung.
     const pdfWidth = 80;
     const pdfHeight = pdfWidth * pxHeight / pxWidth;
-
-    if (pdfHeight > 14400) {
-      throw new Error(
-        'Báo cáo vượt giới hạn chiều cao PDF. Hãy chia báo cáo thành nhiều file.'
-      );
-    }
-
-    // Tăng độ phân giải lên 3 lần.
-    const scale = 3;
+    if (pdfHeight > 14400) throw new Error('Báo cáo vượt giới hạn chiều cao PDF. Hãy chia báo cáo thành nhiều file.');
 
     btn.textContent = 'Đang dựng báo cáo nét cao...';
-
     canvas = await html2canvas(clone, {
-      scale,
-      useCORS: true,
-      allowTaint: false,
-      backgroundColor: '#ffffff',
-      logging: false,
-      width: pxWidth,
-      height: pxHeight,
-      windowWidth: width,
-      scrollX: 0,
-      scrollY: 0
+      scale: 3, useCORS: true, allowTaint: false, backgroundColor: '#ffffff', logging: false,
+      width: pxWidth, height: pxHeight, windowWidth: width, scrollX: 0, scrollY: 0
     });
-
-    if (!canvas.width || !canvas.height) {
-      throw new Error('Không tạo được ảnh báo cáo.');
-    }
+    if (!canvas.width || !canvas.height) throw new Error('Không tạo được ảnh báo cáo.');
 
     btn.textContent = 'Đang tạo PDF JPEG chất lượng cao...';
-
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: [pdfWidth, pdfHeight],
-      compress: true
-    });
-
-    // JPEG chất lượng 100%, không dùng PNG.
-    const imageData = canvas.toDataURL('image/jpeg', 1.0);
-
-    if (!imageData || imageData === 'data:,') {
-      throw new Error('Không chuyển được báo cáo thành ảnh JPEG.');
-    }
-
-    pdf.addImage(
-      imageData,
-      'JPEG',
-      0,
-      0,
-      pdfWidth,
-      pdfHeight,
-      undefined,
-      'FAST'
-    );
+    const pdf = new jsPDF({orientation:'portrait',unit:'mm',format:[pdfWidth,pdfHeight],compress:true});
+    const imageData = canvas.toDataURL('image/jpeg',1.0);
+    if (!imageData || imageData === 'data:,') throw new Error('Không chuyển được báo cáo thành ảnh JPEG.');
+    pdf.addImage(imageData,'JPEG',0,0,pdfWidth,pdfHeight,undefined,'FAST');
 
     canvas.width = 1;
     canvas.height = 1;
     canvas = null;
 
-    const dateText =
-      document.querySelector('#date')?.value || 'bao-cao';
+    const dateText = document.querySelector('#date')?.value || 'bao-cao';
     const filename = 'Bao-cao-trai-ga-' + dateText + '.pdf';
     const blob = pdf.output('blob');
+    if (!blob || !blob.size) throw new Error('File PDF tạo ra bị rỗng.');
+    const file = new File([blob],filename,{type:'application/pdf',lastModified:Date.now()});
 
-    if (!blob || !blob.size) {
-      throw new Error('File PDF tạo ra bị rỗng.');
-    }
-
-    const file = new File([blob], filename, {
-      type: 'application/pdf',
-      lastModified: Date.now()
-    });
-
-    btn.textContent = 'Đang mở bảng chia sẻ...';
-
-    // Chia sẻ trực tiếp nếu trình duyệt hỗ trợ.
-    if (
-      typeof navigator.share === 'function' &&
-      typeof navigator.canShare === 'function' &&
-      navigator.canShare({ files: [file] })
-    ) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: filename
-        });
-        return;
-      } catch (e) {
-        if (e.name === 'AbortError') return;
-        console.warn('Chia sẻ PDF thất bại:', e);
+    btn.textContent = 'Đang mở chia sẻ PDF...';
+    let shared = false;
+    try {
+      const canShareFile = typeof navigator.share === 'function' &&
+        (typeof navigator.canShare !== 'function' || navigator.canShare({files:[file]}));
+      if (canShareFile) {
+        await navigator.share({files:[file],title:filename});
+        shared = true;
       }
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+      console.warn('Chia sẻ PDF trực tiếp chưa mở được; sẽ hiện hộp chia sẻ:',e);
     }
-
-    // Dự phòng: tải PDF về máy.
-    objectUrl = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = objectUrl;
-    a.download = filename;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    alert(
-      'PDF đã tạo xong. Nếu không thấy bảng chia sẻ, ' +
-      'hãy mở app bằng Safari rồi thử lại.'
-    );
+    if (!shared) openPdfShareDialog(file,filename,blob);
 
   } catch (error) {
     console.error('PDF export error:', error);
@@ -2682,19 +2617,12 @@ async function exportPDF() {
       canvas.width = 1;
       canvas.height = 1;
     }
-
     if (stage) stage.remove();
-
-    if (objectUrl) {
-      setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
-    }
-
     busy = false;
     btn.disabled = false;
     btn.textContent = oldText;
   }
 }
-
 /* TỰ LƯU NHÁP */
 fields.forEach(el=>{
  el.addEventListener('focus',()=>{
