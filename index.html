@@ -633,18 +633,18 @@ body.work-menu-open{overflow:hidden}
  </div>
 </div>
 <p class="note">
- Tồn kho lạnh = tổng trứng bàn giao kho từ các ngày trước và hôm nay − tổng trứng đã xuất kho lạnh. Ghi thông tin người nhận và minh chứng tại phần Thông tin xuất kho lạnh của báo cáo.
+ Tồn kho lạnh = tổng trứng bàn giao kho từ các ngày trước và hôm nay − tổng trứng đã xuất kho lạnh. Nếu có xuất trứng, ghi đơn vị/người lấy, số lượng, phân loại và ảnh minh chứng ở phần dưới.
 </p>
-<div id="dailyColdStoreExportDetails" hidden>
+<div id="dailyColdStoreExportDetails">
 <div class="divider"></div>
-<p class="subhead">Thông tin xuất kho lạnh</p>
+<p class="subhead">Thông tin người lấy trứng và xuất kho</p>
 <div class="grid">
  <div class="field"><label for="coldStoreOutDate">Ngày xuất</label><input id="coldStoreOutDate" name="coldStoreOutDate" type="date"></div>
  <div class="field full">
-  <p class="subhead">Người nhận trứng và minh chứng riêng</p>
+  <p class="subhead">Chi tiết từng đơn vị / người lấy trứng</p>
   <div id="coldStoreRecipients" class="cold-recipient-list" aria-live="polite"></div>
   <button id="addColdStoreRecipientBtn" class="cold-recipient-add" type="button">＋ Thêm người lấy trứng</button>
-  <p class="note">Ảnh/video được lưu riêng trên thiết bị này theo từng người nhận, không gửi lên máy chủ và không đồng bộ sang thiết bị khác. Tối đa 100 MB mỗi tệp.</p>
+  <p class="note">Ảnh/video minh chứng xuất kho được lưu riêng trên thiết bị này theo từng người lấy trứng, không tải lên máy chủ và không đồng bộ sang thiết bị khác. Tối đa 100 MB mỗi tệp.</p>
  </div>
 </div>
 </div>
@@ -773,7 +773,7 @@ body.work-menu-open{overflow:hidden}
    <div class="field" style="margin-top:12px"><label>Chênh lệch số liệu</label><select name="discrepancy"><option>Không</option><option>Có</option></select></div>
    <div class="field" style="margin-top:10px"><label>Giải thích chênh lệch</label><textarea name="discrepancyNote" placeholder="Ghi rõ số liệu, nguyên nhân và hướng xử lý..."></textarea></div>
    <div class="divider"></div>
-   <label for="photos">Ảnh minh chứng (bảng thu trứng / kho trứng / sự cố)</label>
+   <label for="photos">Ảnh minh chứng chuyển trứng vào kho</label>
    <input id="photos" type="file" accept="image/*" multiple>
    <div id="photoList" class="photo-list"></div>
 <div id="photoViewer" class="photo-viewer">
@@ -1761,7 +1761,7 @@ data.photos=photos.map(p=>({
   type:p.type,
   url:p.url
 }));
-	 data.coldStoreRecipients=coldStoreRecipients.map(person=>({id:String(person.id||''),name:String(person.name||'').trim()}));
+	 data.coldStoreRecipients=coldStoreRecipients.map(person=>({id:String(person.id||''),unit:String(person.unit||'').trim(),name:String(person.name||'').trim(),quantity:String(person.quantity??''),eggGood:String(person.eggGood??''),eggDirty:String(person.eggDirty??''),eggBroken:String(person.eggBroken??''),eggOtherType:String(person.eggOtherType??'')}));
 	 data.coldStoreRecipient=data.coldStoreRecipients.find(person=>person.name)?.name||'';
 
 data.farmId=selectedFarm?.id||'';
@@ -1783,7 +1783,7 @@ function setData(data){
 	  let id=String(person?.id||'');
 	  if(!id||usedRecipientIds.has(id)) id=newColdStoreRecipient().id;
 	  usedRecipientIds.add(id);
-	  return {id,name:String(person?.name||'')};
+	  return {id,unit:String(person?.unit||''),name:String(person?.name||''),quantity:String(person?.quantity??''),eggGood:String(person?.eggGood??''),eggDirty:String(person?.eggDirty??''),eggBroken:String(person?.eggBroken??''),eggOtherType:String(person?.eggOtherType??'')};
 	 });
 	 if(!coldStoreRecipients.length) coldStoreRecipients=[newColdStoreRecipient()];
 	 coldStoreEvidenceRecords=[];
@@ -2756,8 +2756,8 @@ function coldStoreMediaType(file){
 }
 
 function newColdStoreRecipient(){
-	 const id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():'recipient-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
-	 return {id,name:''};
+ const id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():'recipient-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+ return {id,unit:'',name:'',quantity:'',eggGood:'',eggDirty:'',eggBroken:'',eggOtherType:''};
 }
 
 async function saveColdStoreEvidenceFile(date,farmId,recipientId,file,type){
@@ -2826,38 +2826,71 @@ function renderColdStoreRecipientEvidence(list,items,message='Chưa có tệp mi
 }
 
 function renderColdStoreRecipients(message='Chưa có tệp minh chứng cho người này.'){
-	 const host=$('#coldStoreRecipients');
-	 if(!host) return;
-	 coldStoreMediaUrls.forEach(url=>URL.revokeObjectURL(url));
-	 coldStoreMediaUrls=[];
-	 host.replaceChildren();
-	 if(!coldStoreRecipients.length) coldStoreRecipients=[newColdStoreRecipient()];
-	 const firstRecipientId=coldStoreRecipients[0].id;
-	 coldStoreRecipients.forEach((person,index)=>{
-	  const card=document.createElement('section');card.className='cold-recipient-card';
-	  const head=document.createElement('div');head.className='cold-recipient-head';
-	  const title=document.createElement('strong');title.textContent='Người lấy trứng '+(index+1);head.appendChild(title);
-	  if(coldStoreRecipients.length>1){
-	   const remove=document.createElement('button');remove.type='button';remove.className='cold-recipient-remove';remove.textContent='Xóa người';remove.disabled=coldStoreUploadBusy;
-	   remove.addEventListener('click',()=>removeColdStoreRecipient(person.id));head.appendChild(remove);
-	  }
-	  const nameId='coldStoreRecipientName'+index;
-	  const nameLabel=document.createElement('label');nameLabel.htmlFor=nameId;nameLabel.textContent='Tên người nhận trứng';
-	  const nameInput=document.createElement('input');nameInput.id=nameId;nameInput.type='text';nameInput.maxLength=160;nameInput.placeholder='Nhập tên người nhận';nameInput.value=person.name||'';nameInput.setAttribute('value',nameInput.value);
-	  nameInput.addEventListener('input',()=>{person.name=nameInput.value;nameInput.setAttribute('value',person.name);scheduleDraftSave();});
-	  const fileLabel=document.createElement('label');fileLabel.textContent='Ảnh / video minh chứng của người này';fileLabel.style.marginTop='10px';
-	  const fileInput=document.createElement('input');fileInput.id='coldRecipientEvidence'+index;fileInput.type='file';fileInput.accept='image/*,video/*';fileInput.multiple=true;fileInput.className='cold-recipient-evidence-input';fileInput.disabled=coldStoreUploadBusy;fileLabel.htmlFor=fileInput.id;
-	  fileInput.addEventListener('change',()=>uploadColdStoreRecipientFiles(person.id,fileInput));
-	  const list=document.createElement('div');list.className='cold-evidence-list';list.setAttribute('aria-live','polite');
-	  const files=coldStoreEvidenceRecords.filter(record=>(record.recipientId||firstRecipientId)===person.id);
-	  renderColdStoreRecipientEvidence(list,files,message);
-	  card.append(head,nameLabel,nameInput,fileLabel,fileInput,list);
-	  host.appendChild(card);
-	 });
-	 const addButton=$('#addColdStoreRecipientBtn');
-	 if(addButton) addButton.disabled=coldStoreUploadBusy;
+ const host=$('#coldStoreRecipients');
+ if(!host)return;
+ coldStoreMediaUrls.forEach(url=>URL.revokeObjectURL(url));
+ coldStoreMediaUrls=[];
+ host.replaceChildren();
+ if(!coldStoreRecipients.length)coldStoreRecipients=[newColdStoreRecipient()];
+ const firstRecipientId=coldStoreRecipients[0].id;
+ coldStoreRecipients.forEach((person,index)=>{
+  const card=document.createElement('section');card.className='cold-recipient-card';
+  const head=document.createElement('div');head.className='cold-recipient-head';
+  const title=document.createElement('strong');title.textContent='Lần lấy trứng '+(index+1);head.appendChild(title);
+  if(coldStoreRecipients.length>1){
+   const remove=document.createElement('button');remove.type='button';remove.className='cold-recipient-remove';remove.textContent='Xóa lần lấy';remove.disabled=coldStoreUploadBusy;
+   remove.addEventListener('click',()=>removeColdStoreRecipient(person.id));head.appendChild(remove);
+  }
+  const detailsGrid=document.createElement('div');detailsGrid.className='grid';
+  const addField=(labelText,key,type='text',placeholder='')=>{
+   const field=document.createElement('div');field.className='field';
+   const id='coldStoreRecipient'+key+index;
+   const label=document.createElement('label');label.htmlFor=id;label.textContent=labelText;
+   const input=document.createElement('input');input.id=id;input.type=type;input.value=person[key]??'';input.placeholder=placeholder;
+   if(type==='number'){input.min='0';input.step='1';input.inputMode='numeric';}
+   else input.maxLength=160;
+   input.addEventListener('input',()=>{
+    person[key]=input.value;
+    if(key==='quantity'||key==='eggGood'||key==='eggDirty'||key==='eggBroken'||key==='eggOtherType')updateBreakdown();
+    scheduleDraftSave();
+   });
+   field.append(label,input);detailsGrid.appendChild(field);return input;
+  };
+  addField('Đơn vị lấy trứng','unit','text','Tên đơn vị / cơ sở');
+  addField('Tên người lấy trứng','name','text','Họ tên người lấy');
+  addField('Số lượng lấy (quả)','quantity','number','Nhập tổng số lượng');
+  const classificationTitle=document.createElement('p');classificationTitle.className='subhead';classificationTitle.textContent='Phân loại trứng lấy ra (quả)';
+  const classificationGrid=document.createElement('div');classificationGrid.className='grid';
+  const classifiedLabel=document.createElement('p');classifiedLabel.className='note';
+  const updateBreakdown=()=>{
+   const total=['eggGood','eggDirty','eggBroken','eggOtherType'].reduce((sum,key)=>sum+Math.max(0,Number(person[key])||0),0);
+   classifiedLabel.textContent='Tổng phân loại: '+total.toLocaleString('vi-VN')+' quả'+(Number(person.quantity||0)>0&&total!==Number(person.quantity)?' · chưa khớp số lượng':'');
+  };
+  const addTypeField=(labelText,key)=>{
+   const field=document.createElement('div');field.className='field';
+   const id='coldStoreRecipient'+key+index;
+   const label=document.createElement('label');label.htmlFor=id;label.textContent=labelText;
+   const input=document.createElement('input');input.id=id;input.type='number';input.min='0';input.step='1';input.inputMode='numeric';input.value=person[key]??'';input.placeholder='0';
+   input.addEventListener('input',()=>{person[key]=input.value;updateBreakdown();scheduleDraftSave();});
+   field.append(label,input);classificationGrid.appendChild(field);
+  };
+  addTypeField('Đạt tiêu chuẩn ấp','eggGood');
+  addTypeField('Trứng bẩn','eggDirty');
+  addTypeField('Trứng nứt / vỡ','eggBroken');
+  addTypeField('Loại khác','eggOtherType');
+  updateBreakdown();
+  const fileLabel=document.createElement('label');fileLabel.textContent='Ảnh minh chứng trứng xuất kho (ảnh/video)';fileLabel.style.marginTop='10px';
+  const fileInput=document.createElement('input');fileInput.id='coldRecipientEvidence'+index;fileInput.type='file';fileInput.accept='image/*,video/*';fileInput.multiple=true;fileInput.className='cold-recipient-evidence-input';fileInput.disabled=coldStoreUploadBusy;fileLabel.htmlFor=fileInput.id;
+  fileInput.addEventListener('change',()=>uploadColdStoreRecipientFiles(person.id,fileInput));
+  const list=document.createElement('div');list.className='cold-evidence-list';list.setAttribute('aria-live','polite');
+  const files=coldStoreEvidenceRecords.filter(record=>(record.recipientId||firstRecipientId)===person.id);
+  renderColdStoreRecipientEvidence(list,files,message);
+  card.append(head,detailsGrid,classificationTitle,classificationGrid,classifiedLabel,fileLabel,fileInput,list);
+  host.appendChild(card);
+ });
+ const addButton=$('#addColdStoreRecipientBtn');
+ if(addButton)addButton.disabled=coldStoreUploadBusy;
 }
-
 async function removeColdStoreRecipient(id){
 	 if(coldStoreUploadBusy) return;
 	 if(coldStoreRecipients.length<=1) return;
