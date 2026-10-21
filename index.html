@@ -2454,6 +2454,40 @@ async function exportPDF() {
 
       if (el.type === 'file') {
         cp.remove();
+      } else if (el.tagName === 'TEXTAREA') {
+        // PDF: không dùng lại textarea vì html2canvas có thể cắt phần chữ
+        // dài hoặc chỉ hiển thị một dòng. Dựng thành khối văn bản tự xuống dòng,
+        // giữ nguyên nội dung, dấu xuống dòng và khoảng trắng người dùng đã nhập.
+        const textBlock = document.createElement('div');
+        textBlock.className = 'pdf-textarea-content';
+        textBlock.textContent = el.value; // dùng nguyên bản giá trị báo cáo, không rút gọn
+        const cs = window.getComputedStyle(el);
+        textBlock.style.cssText = [
+          'display:block',
+          'box-sizing:border-box',
+          'width:100%',
+          'min-width:0',
+          'max-width:100%',
+          'min-height:' + Math.max(76, el.scrollHeight || 0) + 'px',
+          'height:auto',
+          'max-height:none',
+          'overflow:visible',
+          'white-space:pre-wrap',
+          'overflow-wrap:anywhere',
+          'word-break:break-word',
+          'line-height:' + cs.lineHeight,
+          'font-family:' + cs.fontFamily,
+          'font-size:' + cs.fontSize,
+          'font-weight:' + cs.fontWeight,
+          'text-align:' + cs.textAlign,
+          'color:#20312a',
+          'background:#fff',
+          'border:1px solid #dce5df',
+          'border-radius:10px',
+          'padding:10px 11px',
+          'margin:0'
+        ].join(';');
+        cp.replaceWith(textBlock);
       } else if (el.type === 'checkbox' || el.type === 'radio') {
         cp.checked = el.checked;
         cp.toggleAttribute('checked', el.checked);
@@ -2465,7 +2499,6 @@ async function exportPDF() {
       } else {
         cp.value = el.value;
         cp.setAttribute('value', el.value);
-        if (el.tagName === 'TEXTAREA') cp.textContent = el.value;
       }
     });
 
@@ -2509,6 +2542,16 @@ async function exportPDF() {
       el.style.setProperty('max-height', 'none', 'important');
       el.style.setProperty('animation', 'none', 'important');
       el.style.setProperty('transition', 'none', 'important');
+    });
+
+    // Bảo vệ các ghi chú dài khỏi tràn ngang hoặc bị cắt khi dựng ảnh PDF.
+    clone.querySelectorAll('.pdf-textarea-content').forEach(el => {
+      el.style.setProperty('white-space', 'pre-wrap', 'important');
+      el.style.setProperty('overflow-wrap', 'anywhere', 'important');
+      el.style.setProperty('word-break', 'break-word', 'important');
+      el.style.setProperty('overflow', 'visible', 'important');
+      el.style.setProperty('height', 'auto', 'important');
+      el.style.setProperty('max-height', 'none', 'important');
     });
 
     clone.querySelectorAll('.photo-list').forEach(el => {
